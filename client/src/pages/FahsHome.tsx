@@ -83,6 +83,8 @@ export default function FahsHome() {
 
       {/* Insurance Type Tabs + Form Card */}
       <div className="w-full -mt-52 relative z-20 px-4 md:px-16 lg:px-28">
+        {/* Blue decorative SVGs on left side of white card */}
+        <img src="/images/bcare/LeftBackground-blue.svg" alt="" className="absolute left-0 top-1/3 pointer-events-none" style={{ height: '80%', opacity: 0.15, zIndex: 0 }} />
         <div className="bg-white shadow-lg" style={{ borderRadius: '15px', overflow: 'visible' }}>
           {/* Tabs */}
           <div className="flex justify-start bg-white px-4 md:px-8 pt-2" style={{ position: 'relative', borderRadius: '15px 15px 0 0' }}>

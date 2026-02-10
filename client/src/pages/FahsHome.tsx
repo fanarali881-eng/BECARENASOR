@@ -80,7 +80,7 @@ export default function FahsHome() {
 
       {/* Insurance Type Tabs + Form Card */}
       <div className="w-full -mt-20 relative z-20 px-4 md:px-16 lg:px-28">
-        <div className="bg-white shadow-lg overflow-hidden" style={{ borderTopLeftRadius: '30px', borderTopRightRadius: '30px' }}>
+        <div className="bg-white shadow-lg overflow-hidden" style={{ borderRadius: '10px' }}>
           {/* Tabs */}
           <div className="flex justify-start bg-white px-4 md:px-8">
             {[

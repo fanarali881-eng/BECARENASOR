@@ -118,13 +118,13 @@ export default function FahsHome() {
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">الغرض من التأمين</label>
                 <div className="flex gap-2">
                   <label className={`flex items-center flex-row-reverse justify-end gap-2 cursor-pointer px-12 py-1.5 text-sm font-bold transition-all border ${
-                    insuranceType === "new" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-gray-300"
+                    insuranceType === "new" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-[#1a5276]"
                   }`} style={{ borderRadius: '5px' }}>
                     <input type="radio" name="insuranceType" value="new" checked={insuranceType === "new"} onChange={() => setInsuranceType("new")} className="w-4 h-4" style={{ accentColor: '#f5a623' }} />
                     <span>تأمين جديد</span>
                   </label>
                   <label className={`flex items-center flex-row-reverse justify-end gap-2 cursor-pointer px-12 py-1.5 text-sm font-bold transition-all border ${
-                    insuranceType === "transfer" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-gray-300"
+                    insuranceType === "transfer" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-[#1a5276]"
                   }`} style={{ borderRadius: '5px' }}>
                     <input type="radio" name="insuranceType" value="transfer" checked={insuranceType === "transfer"} onChange={() => setInsuranceType("transfer")} className="w-4 h-4" style={{ accentColor: '#f5a623' }} />
                     <span>نقل ملكية</span>
@@ -137,13 +137,13 @@ export default function FahsHome() {
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">نوع تسجيل المركبة</label>
                 <div className="flex gap-2">
                   <label className={`flex items-center flex-row-reverse justify-end gap-2 cursor-pointer px-12 py-1.5 text-sm font-bold transition-all border ${
-                    vehicleType === "form" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-gray-300"
+                    vehicleType === "form" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-[#1a5276]"
                   }`} style={{ borderRadius: '5px' }}>
                     <input type="radio" name="vehicleType" value="form" checked={vehicleType === "form"} onChange={() => setVehicleType("form")} className="w-4 h-4" style={{ accentColor: '#f5a623' }} />
                     <span>استمارة</span>
                   </label>
                   <label className={`flex items-center flex-row-reverse justify-end gap-2 cursor-pointer px-12 py-1.5 text-sm font-bold transition-all border ${
-                    vehicleType === "customs" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-gray-300"
+                    vehicleType === "customs" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-white text-gray-500 border-[#1a5276]"
                   }`} style={{ borderRadius: '5px' }}>
                     <input type="radio" name="vehicleType" value="customs" checked={vehicleType === "customs"} onChange={() => setVehicleType("customs")} className="w-4 h-4" style={{ accentColor: '#f5a623' }} />
                     <span>بطاقة جمركية</span>

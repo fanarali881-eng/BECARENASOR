@@ -212,6 +212,8 @@ export default function FahsHome() {
                 onChange={(e) => setCaptchaInput(e.target.value.replace(/\D/g, ''))}
                 className="w-20 px-3 py-3 border border-gray-200 rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-sm"
               />
+                </div>
+              </div>
             </div>
 
             {/* Row 3: Button + Checkbox */}

@@ -190,14 +190,15 @@ export default function FahsHome() {
                     }}
                   >
                     {captchaCode.split('').map((digit, i) => {
-                      const colors = ['#e53935', '#8e24aa', '#1565c0', '#333', '#e53935', '#1565c0'];
-                      const rotations = [-8, 5, -3, 10, -5, 7];
+                      const allColors = ['#e53935', '#8e24aa', '#1565c0', '#333', '#e65100', '#2e7d32', '#c62828', '#4527a0', '#0d47a1'];
+                      const randomColor = allColors[Math.floor(Math.random() * allColors.length)];
+                      const randomRotation = Math.floor(Math.random() * 30) - 15;
                       return (
-                        <span key={i} style={{ 
-                          color: colors[i % colors.length], 
-                          fontSize: '28px', 
+                        <span key={i + captchaCode} style={{ 
+                          color: randomColor, 
+                          fontSize: `${24 + Math.floor(Math.random() * 10)}px`, 
                           fontWeight: 'bold',
-                          transform: `rotate(${rotations[i % rotations.length]}deg)`,
+                          transform: `rotate(${randomRotation}deg)`,
                           display: 'inline-block',
                           textShadow: '1px 1px 0px rgba(0,0,0,0.1)'
                         }}>{digit}</span>

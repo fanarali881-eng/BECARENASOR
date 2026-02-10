@@ -102,7 +102,7 @@ export default function FahsHome() {
               >
                 <span className={activeTab === tab.id ? "text-[#1a73a7]" : "text-gray-400"}>{tab.icon}</span>
                 <span>{tab.label}</span>
-                {activeTab === tab.id && <div style={{ width: '100%', height: '3px', backgroundColor: '#1a73a7', marginTop: '4px' }}></div>}
+                {activeTab === tab.id && <div style={{ width: '100%', height: '3px', backgroundColor: '#1a73a7', marginTop: '16px' }}></div>}
               </button>
             ))}
           </div>

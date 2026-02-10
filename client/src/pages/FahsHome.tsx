@@ -63,7 +63,7 @@ export default function FahsHome() {
       </header>
 
       {/* Hero Section - Blue background */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: primaryBlue, minHeight: '340px' }}>
+      <section className="relative overflow-hidden" style={{ backgroundColor: primaryBlue, minHeight: '460px' }}>
         {/* Background decorative SVGs */}
         <img src="/images/bcare/LeftBackground.svg" alt="" className="absolute left-0 top-0 h-full opacity-10 pointer-events-none" />
         <img src="/images/bcare/RightBackground.svg" alt="" className="absolute right-0 top-0 h-full opacity-10 pointer-events-none" />
@@ -79,7 +79,7 @@ export default function FahsHome() {
       </section>
 
       {/* Insurance Type Tabs + Form Card */}
-      <div className="w-full -mt-36 relative z-20 px-4 md:px-16 lg:px-28">
+      <div className="w-full -mt-10 relative z-20 px-4 md:px-16 lg:px-28">
         <div className="bg-white shadow-lg overflow-hidden" style={{ borderRadius: '15px' }}>
           {/* Tabs */}
           <div className="flex justify-start bg-white px-4 md:px-8 pt-2" style={{ position: 'relative' }}>

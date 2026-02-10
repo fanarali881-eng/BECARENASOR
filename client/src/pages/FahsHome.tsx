@@ -63,10 +63,10 @@ export default function FahsHome() {
       </header>
 
       {/* Hero Section - Blue background */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: primaryBlue, minHeight: '460px' }}>
-        {/* Background decorative SVGs */}
-        <img src="/images/bcare/LeftBackground.svg" alt="" className="absolute left-0 top-0 h-full opacity-10 pointer-events-none" />
-        <img src="/images/bcare/RightBackground.svg" alt="" className="absolute right-0 top-0 h-full opacity-10 pointer-events-none" />
+      <section className="relative" style={{ backgroundColor: primaryBlue, minHeight: '460px', overflow: 'visible' }}>
+        {/* Background decorative SVGs - larger and more visible */}
+        <img src="/images/bcare/LeftBackground.svg" alt="" className="absolute left-0 top-0 pointer-events-none" style={{ height: '140%', opacity: 0.15 }} />
+        <img src="/images/bcare/RightBackground.svg" alt="" className="absolute right-0 top-0 pointer-events-none" style={{ height: '140%', opacity: 0.15 }} />
         
         <div className="container mx-auto px-4 lg:px-8 pt-12 pb-32 relative z-10 text-center">
           <h1 className="text-2xl md:text-4xl lg:text-[42px] font-bold text-white leading-tight mb-4" style={{ lineHeight: '1.4' }}>

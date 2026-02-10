@@ -152,24 +152,22 @@ export default function FahsHome() {
               </div>
             </div>
 
-            {/* Row 2: Input fields */}
-            <div className="flex flex-col md:flex-row items-end gap-4">
+            {/* Row 2: Input fields - same width as radio groups above */}
+            <div className="flex flex-col md:flex-row items-end gap-6 md:gap-12">
               {/* رقم الهوية / الإقامة */}
               <div className="flex-1 min-w-0">
-                <label className="block text-xs text-gray-400 mb-1.5 text-right">رقم الهوية / الإقامة</label>
                 <input
                   type="text"
                   inputMode="numeric"
                   placeholder="رقم الهوية / الإقامة"
                   value={nationalId}
                   onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-right focus:outline-none focus:border-[#1a73a7] text-sm"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold placeholder:font-bold placeholder:text-gray-400"
                 />
               </div>
 
               {/* الرقم التسلسلي */}
               <div className="flex-1 min-w-0">
-                <label className="block text-xs text-gray-400 mb-1.5 text-right">الرقم التسلسلى</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -177,7 +175,7 @@ export default function FahsHome() {
                     placeholder="الرقم التسلسلى"
                     value={serialNumber}
                     onChange={(e) => setSerialNumber(e.target.value.replace(/\D/g, ''))}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-right focus:outline-none focus:border-[#1a73a7] text-sm"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold placeholder:font-bold placeholder:text-gray-400"
                   />
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -187,7 +185,6 @@ export default function FahsHome() {
 
               {/* رمز التحقق */}
               <div className="flex-shrink-0">
-                <label className="block text-xs text-gray-400 mb-1.5 text-right">رمز التحقق</label>
                 <div className="flex items-center gap-2">
                   <div 
                     className="px-4 py-2.5 rounded-lg text-xl font-bold tracking-widest select-none"
@@ -213,7 +210,7 @@ export default function FahsHome() {
                     inputMode="numeric"
                     value={captchaInput}
                     onChange={(e) => setCaptchaInput(e.target.value.replace(/\D/g, ''))}
-                    className="w-20 px-3 py-3 border border-gray-200 rounded-lg bg-gray-50 text-center focus:outline-none focus:border-[#1a73a7] text-sm"
+                    className="w-20 px-3 py-3 border border-gray-200 rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-sm"
                   />
                 </div>
               </div>

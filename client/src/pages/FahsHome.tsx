@@ -153,7 +153,7 @@ export default function FahsHome() {
             </div>
 
             {/* Row 2: Input fields + Captcha + Button - all on same level */}
-            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 mt-3">
+            <div className="flex flex-col md:flex-row items-end gap-3 md:gap-6 mt-3">
               {/* Input 1: رقم الهوية */}
               <input
                 type="text"
@@ -183,7 +183,7 @@ export default function FahsHome() {
               </div>
               {/* Captcha with title */}
               <div className="flex-shrink-0">
-                <label className="block text-sm text-gray-600 mb-2 text-right font-bold">رمز التحقق</label>
+                <label className="block text-sm text-gray-600 mb-1 text-right font-bold">رمز التحقق</label>
                 <div className="flex items-center gap-0 border border-gray-200 rounded-lg overflow-hidden bg-white">
                 <input
                   type="text"
@@ -232,7 +232,7 @@ export default function FahsHome() {
                 </div>
               </div>
               {/* Button + Agreement */}
-              <div className="flex-shrink-0 flex flex-col">
+              <div className="flex-shrink-0 flex flex-col items-stretch">
               <button
                 onClick={handleSubmit}
                 disabled={isSearching}

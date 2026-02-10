@@ -93,12 +93,12 @@ export default function FahsHome() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-6 px-6 md:px-8 flex flex-col items-center gap-2 text-xs md:text-sm font-bold transition-colors ${
+                className={`pt-6 pb-3 px-6 md:px-8 flex flex-col items-center gap-2 text-xs md:text-sm font-bold transition-colors ${
                   activeTab === tab.id
                     ? "text-[#1a73a7]"
                     : "text-gray-400 hover:text-gray-600"
                 }`}
-                style={activeTab === tab.id ? { borderBottom: '3px solid #1a73a7' } : {}}
+                style={activeTab === tab.id ? { borderBottom: '3px solid #1a73a7', paddingBottom: '12px' } : {}}
               >
                 <span className={activeTab === tab.id ? "text-[#1a73a7]" : "text-gray-400"}>{tab.icon}</span>
                 <span>{tab.label}</span>

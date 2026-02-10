@@ -80,7 +80,7 @@ export default function FahsHome() {
 
       {/* Insurance Type Tabs + Form Card */}
       <div className="w-full -mt-20 relative z-20 px-4 md:px-16 lg:px-28">
-        <div className="bg-white shadow-lg overflow-hidden" style={{ borderRadius: '10px' }}>
+        <div className="bg-white shadow-lg overflow-hidden" style={{ borderRadius: '15px' }}>
           {/* Tabs */}
           <div className="flex justify-start bg-white px-4 md:px-8">
             {[
@@ -107,7 +107,7 @@ export default function FahsHome() {
           </div>
 
           {/* Separator line */}
-          <div style={{ height: '8px', backgroundColor: '#e0e0e0' }}></div>
+          <div style={{ height: '12px', backgroundColor: '#e0e0e0' }}></div>
 
           {/* Form - Compact horizontal layout like bcare.com.sa */}
           <div className="bg-white px-4 md:px-8 lg:px-12 py-4">

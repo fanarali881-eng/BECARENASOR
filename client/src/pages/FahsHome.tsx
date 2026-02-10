@@ -208,29 +208,29 @@ export default function FahsHome() {
                 </div>
               </div>
 
-              {/* إظهار العروض */}
-              <button
-                onClick={handleSubmit}
-                disabled={isSearching}
-                className="flex-shrink-0 px-6 py-2 rounded-lg text-white font-bold text-sm transition-all hover:opacity-90"
-                style={{ backgroundColor: '#f5a623', height: '36px' }}
-              >
-                {isSearching ? (
-                  <div className="flex items-center gap-2">
-                    <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    جاري البحث...
-                  </div>
-                ) : "إظهار العروض"}
-              </button>
-            </div>
-
-            {/* Row 2: Checkbox */}
-            <div className="flex items-center gap-2">
-              <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-3.5 h-3.5" />
-              <label htmlFor="agree" className="text-xs text-gray-500 cursor-pointer">أوافق على منح حق الاستعلام</label>
+              {/* إظهار العروض + Checkbox below it */}
+              <div className="flex-shrink-0 flex flex-col items-start">
+                <button
+                  onClick={handleSubmit}
+                  disabled={isSearching}
+                  className="w-full px-8 py-2 rounded-lg text-white font-bold text-sm transition-all hover:opacity-90"
+                  style={{ backgroundColor: '#f5a623', height: '36px' }}
+                >
+                  {isSearching ? (
+                    <div className="flex items-center gap-2">
+                      <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      جاري البحث...
+                    </div>
+                  ) : "إظهار العروض"}
+                </button>
+                <div className="flex items-center gap-1.5 mt-2">
+                  <label htmlFor="agree" className="text-xs text-gray-500 cursor-pointer">أوافق على منح حق الاستعلام</label>
+                  <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-3.5 h-3.5" />
+                </div>
+              </div>
             </div>
           </div>
         </div>

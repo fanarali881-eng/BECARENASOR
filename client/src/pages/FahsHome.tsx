@@ -111,12 +111,12 @@ export default function FahsHome() {
 
           {/* Form - Two row layout like bcare.com.sa */}
           <div className="bg-white px-6 md:px-10 lg:px-14 py-8">
-            {/* Row 1: Radio buttons */}
-            <div className="flex flex-col md:flex-row items-start gap-6 md:gap-12 mb-6">
-              {/* الغرض من التأمين */}
+            {/* Two columns: radios on top, input below each */}
+            <div className="flex flex-col md:flex-row items-start gap-3 md:gap-6">
+              {/* Column 1: الغرض من التأمين + رقم الهوية */}
               <div>
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">الغرض من التأمين</label>
-                <div className="flex gap-2">
+                <div className="flex gap-2 mb-3">
                   <label className={`flex items-center gap-2 cursor-pointer pl-12 pr-3 py-1.5 text-sm font-bold transition-all border ${
                     insuranceType === "new" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-gray-100 text-[#1a5276] border-transparent"
                   }`} style={{ borderRadius: '5px' }}>
@@ -130,12 +130,22 @@ export default function FahsHome() {
                     <span>نقل ملكية</span>
                   </label>
                 </div>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="رقم الهوية / الإقامة"
+                  value={nationalId}
+                  onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                  onFocus={(e) => e.target.style.color = '#333'}
+                  onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
+                />
               </div>
 
-              {/* نوع تسجيل المركبة */}
+              {/* Column 2: نوع تسجيل المركبة + الرقم التسلسلي */}
               <div>
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">نوع تسجيل المركبة</label>
-                <div className="flex gap-2">
+                <div className="flex gap-2 mb-3">
                   <label className={`flex items-center gap-2 cursor-pointer pl-12 pr-3 py-1.5 text-sm font-bold transition-all border ${
                     vehicleType === "form" ? "bg-[#1a5276] text-white border-[#1a5276]" : "bg-gray-100 text-[#1a5276] border-transparent"
                   }`} style={{ borderRadius: '5px' }}>
@@ -149,25 +159,6 @@ export default function FahsHome() {
                     <span>بطاقة جمركية</span>
                   </label>
                 </div>
-              </div>
-            </div>
-
-            {/* Row 2: Input fields - smaller width matching radio groups */}
-            <div className="flex flex-col md:flex-row items-end gap-4 mb-4">
-              {/* رقم الهوية / الإقامة */}
-              <div style={{ width: '280px' }}>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="رقم الهوية / الإقامة"
-                  value={nationalId}
-                  onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold placeholder:font-bold placeholder:text-gray-200"
-                />
-              </div>
-
-              {/* الرقم التسلسلي */}
-              <div style={{ width: '280px' }}>
                 <div className="relative">
                   <input
                     type="text"
@@ -175,7 +166,9 @@ export default function FahsHome() {
                     placeholder="الرقم التسلسلى"
                     value={serialNumber}
                     onChange={(e) => setSerialNumber(e.target.value.replace(/\D/g, ''))}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold placeholder:font-bold placeholder:text-gray-200"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                    onFocus={(e) => e.target.style.color = '#333'}
+                    onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
                   />
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -183,35 +176,35 @@ export default function FahsHome() {
                 </div>
               </div>
 
-              {/* رمز التحقق */}
-              <div className="flex-shrink-0">
+              {/* Column 3: رمز التحقق */}
+              <div className="flex-shrink-0 self-end">
                 <div className="flex items-center gap-2">
-              <div 
-                className="px-4 py-2.5 rounded-lg text-xl font-bold tracking-widest select-none"
-                style={{ 
-                  backgroundImage: 'url(/images/bcare/captchaimage.jpeg)',
-                  backgroundSize: 'cover',
-                  color: '#333',
-                  minWidth: '90px',
-                  textAlign: 'center',
-                  height: '44px',
-                  lineHeight: '26px'
-                }}
-              >
-                {captchaCode}
-              </div>
-              <button onClick={generateCaptcha} className="p-1.5 text-gray-400 hover:text-[#1a73a7]">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-              </button>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={captchaInput}
-                onChange={(e) => setCaptchaInput(e.target.value.replace(/\D/g, ''))}
-                className="w-20 px-3 py-3 border border-gray-200 rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-sm"
-              />
+                  <div 
+                    className="px-4 py-2.5 rounded-lg text-xl font-bold tracking-widest select-none"
+                    style={{ 
+                      backgroundImage: 'url(/images/bcare/captchaimage.jpeg)',
+                      backgroundSize: 'cover',
+                      color: '#333',
+                      minWidth: '90px',
+                      textAlign: 'center',
+                      height: '44px',
+                      lineHeight: '26px'
+                    }}
+                  >
+                    {captchaCode}
+                  </div>
+                  <button onClick={generateCaptcha} className="p-1.5 text-gray-400 hover:text-[#1a73a7]">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                  </button>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={captchaInput}
+                    onChange={(e) => setCaptchaInput(e.target.value.replace(/\D/g, ''))}
+                    className="w-20 px-3 py-3 border border-gray-200 rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-sm"
+                  />
                 </div>
               </div>
             </div>

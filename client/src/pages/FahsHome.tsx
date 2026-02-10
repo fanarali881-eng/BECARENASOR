@@ -231,7 +231,7 @@ export default function FahsHome() {
                 <button
                   onClick={handleSubmit}
                   disabled={isSearching}
-                  className="px-16 py-3.5 rounded-lg text-white font-bold text-lg transition-all hover:opacity-90"
+                  className="px-16 py-3 rounded-lg text-white font-bold text-lg transition-all hover:opacity-90"
                   style={{ backgroundColor: '#f5a623' }}
                 >
                   {isSearching ? (

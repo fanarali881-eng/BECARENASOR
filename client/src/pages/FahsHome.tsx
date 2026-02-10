@@ -161,7 +161,7 @@ export default function FahsHome() {
                 placeholder="رقم الهوية / الإقامة"
                 value={nationalId}
                 onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
-                className="flex-1 px-4 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-sm font-bold" style={{ color: '#ccc', height: '48px' }}
+                className="flex-1 px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
                 onFocus={(e) => e.target.style.color = '#333'}
                 onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
               />
@@ -173,7 +173,7 @@ export default function FahsHome() {
                   placeholder="الرقم التسلسلى"
                   value={serialNumber}
                   onChange={(e) => setSerialNumber(e.target.value.replace(/\D/g, ''))}
-                  className="w-full px-4 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-sm font-bold" style={{ color: '#ccc', height: '48px' }}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
                   onFocus={(e) => e.target.style.color = '#333'}
                   onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
                 />

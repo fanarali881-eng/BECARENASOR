@@ -161,7 +161,7 @@ export default function FahsHome() {
                 placeholder="رقم الهوية / الإقامة"
                 value={nationalId}
                 onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
-                className="flex-1 px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                className="flex-1 px-4 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-sm font-bold" style={{ color: '#ccc', height: '48px' }}
                 onFocus={(e) => e.target.style.color = '#333'}
                 onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
               />
@@ -173,7 +173,7 @@ export default function FahsHome() {
                   placeholder="الرقم التسلسلى"
                   value={serialNumber}
                   onChange={(e) => setSerialNumber(e.target.value.replace(/\D/g, ''))}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                  className="w-full px-4 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-sm font-bold" style={{ color: '#ccc', height: '48px' }}
                   onFocus={(e) => e.target.style.color = '#333'}
                   onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
                 />
@@ -182,8 +182,8 @@ export default function FahsHome() {
                 </span>
               </div>
               {/* Captcha with title */}
-              <div className="flex-shrink-0 relative" style={{ paddingTop: '20px' }}>
-                <label className="absolute top-0 right-0 text-sm text-gray-600 font-bold whitespace-nowrap">رمز التحقق</label>
+              <div className="flex-shrink-0 relative">
+                <label className="absolute right-0 text-sm text-gray-600 font-bold whitespace-nowrap" style={{ top: '-20px' }}>رمز التحقق</label>
                 <div className="flex items-center gap-0 border border-gray-200 rounded-lg overflow-hidden bg-white">
                 <input
                   type="text"
@@ -236,8 +236,8 @@ export default function FahsHome() {
               <button
                 onClick={handleSubmit}
                 disabled={isSearching}
-                className="flex-shrink-0 px-16 py-3 rounded-lg text-white font-bold text-lg transition-all hover:opacity-90"
-                style={{ backgroundColor: '#f5a623' }}
+                className="flex-shrink-0 px-12 rounded-lg text-white font-bold text-base transition-all hover:opacity-90"
+                style={{ backgroundColor: '#f5a623', height: '48px' }}
               >
                 {isSearching ? (
                   <div className="flex items-center gap-2">

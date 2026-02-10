@@ -112,7 +112,7 @@ export default function FahsHome() {
           {/* Form - Two row layout like bcare.com.sa */}
           <div className="bg-white px-6 md:px-10 lg:px-14 py-8">
             {/* Two columns: radios on top, input below each */}
-            <div className="flex flex-col md:flex-row items-start gap-3 md:gap-6">
+            <div className="flex flex-col md:flex-row items-end gap-3 md:gap-6">
               {/* Column 1: الغرض من التأمين + رقم الهوية */}
               <div>
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">الغرض من التأمين</label>
@@ -179,21 +179,21 @@ export default function FahsHome() {
               {/* Column 3: رمز التحقق */}
               <div className="flex-shrink-0">
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">رمز التحقق</label>
-                <div className="flex items-center gap-2" style={{ marginTop: 'auto' }}>
+                <div className="flex items-center gap-0 border border-gray-200 rounded-lg overflow-hidden bg-white">
                   <input
                     type="text"
                     inputMode="numeric"
                     value={captchaInput}
                     onChange={(e) => setCaptchaInput(e.target.value.replace(/\D/g, ''))}
-                    className="w-24 px-3 py-3 border border-gray-200 rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-sm"
+                    className="w-24 px-3 py-3 bg-white text-center focus:outline-none text-sm border-none"
                   />
-                  <button onClick={generateCaptcha} className="p-1.5 text-gray-400 hover:text-[#1a73a7]">
+                  <button onClick={generateCaptcha} className="px-1.5 text-gray-400 hover:text-[#1a73a7]">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                   </button>
                   <div 
-                    className="px-4 py-2 rounded-lg select-none flex items-center justify-center gap-0.5"
+                    className="px-3 py-2 select-none flex items-center justify-center gap-0.5"
                     style={(() => {
                       const bgColors = ['#00e5ff','#ffeb3b','#ff9800','#e91e63','#4caf50','#9c27b0','#00bcd4','#8bc34a','#ff5722','#03a9f4'];
                       const c = bgColors[Math.floor(Math.random() * bgColors.length)];
@@ -205,7 +205,7 @@ export default function FahsHome() {
                         { background: `radial-gradient(circle, ${c} 2px, transparent 2px)`, backgroundSize: '10px 10px' },
                       ];
                       const p = patterns[Math.floor(Math.random() * patterns.length)];
-                      return { ...p, minWidth: '110px', height: '48px' };
+                      return { ...p, minWidth: '100px', height: '48px' };
                     })()}
                   >
                     {captchaCode.split('').map((digit, i) => {

@@ -75,11 +75,6 @@ export default function FahsHome() {
         </div>
       </section>
 
-      {/* Decorative SVGs spanning from blue hero into white card area */}
-      <div className="absolute pointer-events-none" style={{ left: '3%', top: '320px', zIndex: 15 }}>
-        <img src="/images/bcare/LeftBackground-blue.svg" alt="" style={{ height: '500px', opacity: 0.13 }} />
-      </div>
-
       {/* Insurance Type Tabs + Form Card */}
       <div className="w-full -mt-52 relative z-20 px-4 md:px-16 lg:px-28">
         <div className="bg-white shadow-lg" style={{ borderRadius: '15px', overflow: 'visible' }}>
@@ -257,6 +252,11 @@ export default function FahsHome() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Decorative SVGs on white background below the card */}
+      <div className="relative" style={{ height: '0px', overflow: 'visible' }}>
+        <img src="/images/bcare/LeftBackground-blue.svg" alt="" className="pointer-events-none" style={{ height: '550px', opacity: 0.12, position: 'absolute', left: '5%', top: '-200px', zIndex: 1 }} />
       </div>
 
       {/* Partners Bar */}

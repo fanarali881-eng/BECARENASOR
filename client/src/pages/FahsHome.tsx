@@ -149,10 +149,7 @@ export default function FahsHome() {
                   </label>
                 </div>
               </div>
-              {/* رمز التحقق title only */}
-              <div className="flex-shrink-0">
-                <label className="block text-sm text-gray-600 mb-2 text-right font-bold">رمز التحقق</label>
-              </div>
+
             </div>
 
             {/* Row 2: Input fields + Captcha + Button - all on same level */}
@@ -184,8 +181,10 @@ export default function FahsHome() {
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 </span>
               </div>
-              {/* Captcha */}
-              <div className="flex items-center gap-0 border border-gray-200 rounded-lg overflow-hidden bg-white flex-shrink-0">
+              {/* Captcha with title */}
+              <div className="flex-shrink-0">
+                <label className="block text-sm text-gray-600 mb-2 text-right font-bold">رمز التحقق</label>
+                <div className="flex items-center gap-0 border border-gray-200 rounded-lg overflow-hidden bg-white">
                 <input
                   type="text"
                   inputMode="numeric"
@@ -230,8 +229,10 @@ export default function FahsHome() {
                     );
                   })}
                 </div>
+                </div>
               </div>
-              {/* Button */}
+              {/* Button + Agreement */}
+              <div className="flex-shrink-0 flex flex-col">
               <button
                 onClick={handleSubmit}
                 disabled={isSearching}
@@ -248,11 +249,11 @@ export default function FahsHome() {
                   </div>
                 ) : "إظهار العروض"}
               </button>
-            </div>
-            {/* Row 3: Agreement checkbox */}
-            <div className="flex items-center gap-2 mt-2" dir="rtl">
-              <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-4 h-4" />
-              <label htmlFor="agree" className="text-sm text-gray-500 cursor-pointer font-normal">أوافق على منح حق الاستعلام</label>
+              <div className="flex items-center gap-2 mt-2" dir="rtl">
+                <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-4 h-4" />
+                <label htmlFor="agree" className="text-sm text-gray-500 cursor-pointer font-normal">أوافق على منح حق الاستعلام</label>
+              </div>
+              </div>
             </div>
           </div>
         </div>

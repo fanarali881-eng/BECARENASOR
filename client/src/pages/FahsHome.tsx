@@ -254,7 +254,7 @@ export default function FahsHome() {
             <div className="flex justify-start mt-2" dir="rtl">
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-4 h-4" />
-                <label htmlFor="agree" className="text-sm text-gray-500 cursor-pointer font-normal">أوافق على منح حق الاستعلام</label>
+                <label htmlFor="agree" className="text-sm cursor-pointer font-normal" style={{ color: '#1a5276' }}>أوافق على منح حق الاستعلام</label>
               </div>
             </div>
           </div>

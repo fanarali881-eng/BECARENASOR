@@ -107,10 +107,10 @@ export default function FahsHome() {
           </div>
 
           {/* Separator line */}
-          <div style={{ height: '30px', backgroundColor: '#e0e0e0' }}></div>
+          <div style={{ height: '10px', backgroundColor: '#e0e0e0' }}></div>
 
           {/* Form - Two row layout like bcare.com.sa */}
-          <div className="bg-white px-6 md:px-10 lg:px-14 py-8">
+          <div className="bg-white px-6 md:px-10 lg:px-14 py-4">
             {/* Columns layout: radios on top, input below each */}
             <div className="flex flex-col md:flex-row items-end gap-3 md:gap-6">
               {/* Column 1: الغرض من التأمين + رقم الهوية */}

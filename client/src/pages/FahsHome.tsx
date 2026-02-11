@@ -62,7 +62,7 @@ export default function FahsHome() {
   const validateSaudiId = (id: string): string => {
     if (!id) return "يرجى إدخال رقم الهوية / الإقامة";
     if (id.length !== 10) return "رقم الهوية يجب أن يكون 10 أرقام";
-    if (id[0] !== '1' && id[0] !== '2') return "رقم الهوية يجب أن يبدأ بـ 1 أو 2";
+    if (id[0] !== '1' && id[0] !== '2') return "رقم الهوية / الإقامة غير صحيحة";
     // Luhn algorithm check
     let sum = 0;
     for (let i = 0; i < 10; i++) {

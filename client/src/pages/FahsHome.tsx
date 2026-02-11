@@ -535,7 +535,6 @@ function InsuranceLogosCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const visibleCount = 5;
 
   // Create extended array for seamless looping
   const extendedLogos = [...logos, ...logos, ...logos];
@@ -572,12 +571,20 @@ function InsuranceLogosCarousel() {
     startAutoPlay();
   };
 
-  const itemWidth = 180; // px per logo slot
-  const gap = 32; // gap between items
+  const itemWidth = 180;
+  const gap = 32;
   const offset = currentIndex * (itemWidth + gap);
 
   return (
-    <div className="flex items-center flex-1 min-w-0">
+    <div className="flex items-center flex-1 min-w-0" dir="ltr">
+      <button
+        onClick={handlePrev}
+        className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-50 shadow flex items-center justify-center text-[#146494] hover:bg-gray-100 ml-3"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
       <div className="overflow-hidden flex-1">
         <div
           className="flex items-center"
@@ -594,14 +601,6 @@ function InsuranceLogosCarousel() {
           ))}
         </div>
       </div>
-      <button
-        onClick={handlePrev}
-        className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-50 shadow flex items-center justify-center text-[#146494] hover:bg-gray-100 mr-3"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
     </div>
   );
 }

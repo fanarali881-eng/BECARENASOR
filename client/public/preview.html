@@ -10,12 +10,12 @@ body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
 .bar { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #eee; padding: 24px 20px; display: flex; align-items: center; }
 .auth-section { flex-shrink: 0; display: flex; align-items: center; gap: 16px; padding-left: 24px; }
 .divider { height: 64px; width: 1px; background: #ccc; }
-.carousel-wrapper { flex: 1; min-width: 0; display: flex; align-items: center; }
+.carousel-wrapper { flex: 1; min-width: 0; display: flex; align-items: center; direction: ltr; }
 .carousel-viewport { overflow: hidden; flex: 1; }
-.carousel-track { display: flex; align-items: center; gap: 32px; transition: transform 0.5s ease-in-out; }
+.carousel-track { display: flex; align-items: center; gap: 32px; }
 .carousel-item { flex-shrink: 0; width: 180px; height: 48px; display: flex; align-items: center; justify-content: center; }
 .carousel-item img { max-height: 40px; max-width: 100%; object-fit: contain; }
-.arrow-btn { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: #f9fafb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; color: #146494; border: none; cursor: pointer; margin-right: 12px; }
+.arrow-btn { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: #f9fafb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; color: #146494; border: none; cursor: pointer; margin-left: 12px; }
 .arrow-btn:hover { background: #f3f4f6; }
 </style>
 </head>
@@ -30,13 +30,13 @@ body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
     <img src="/images/bcare/23arbic.svg" alt="23 شركة تأمين" style="height: 80px;" />
   </div>
   <div class="carousel-wrapper">
+    <button class="arrow-btn" onclick="nextSlide()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" /></svg>
+    </button>
     <div class="carousel-viewport">
       <div class="carousel-track" id="track">
       </div>
     </div>
-    <button class="arrow-btn" onclick="nextSlide()">
-      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-    </button>
   </div>
 </div>
 
@@ -61,14 +61,12 @@ const logos = [
   { src: "/images/bcare/TUIC.svg", alt: "TUIC" },
 ];
 
-// Triple the logos for seamless looping
 const allLogos = [...logos, ...logos, ...logos];
 const track = document.getElementById('track');
 let currentIndex = 0;
 const itemWidth = 180;
 const gap = 32;
 
-// Build track items
 allLogos.forEach(logo => {
   const div = document.createElement('div');
   div.className = 'carousel-item';
@@ -79,14 +77,12 @@ allLogos.forEach(logo => {
 function updatePosition(animate) {
   const offset = currentIndex * (itemWidth + gap);
   track.style.transition = animate ? 'transform 0.5s ease-in-out' : 'none';
-  track.style.transform = `translateX(${offset}px)`;
+  track.style.transform = `translateX(-${offset}px)`;
 }
 
 function nextSlide() {
   currentIndex++;
   updatePosition(true);
-  
-  // Reset seamlessly after scrolling through one full set
   if (currentIndex >= logos.length) {
     setTimeout(() => {
       currentIndex -= logos.length;
@@ -95,16 +91,11 @@ function nextSlide() {
   }
 }
 
-// Auto-play
 let timer = setInterval(nextSlide, 2500);
-
-// Reset timer on manual click
 document.querySelector('.arrow-btn').addEventListener('click', () => {
   clearInterval(timer);
   timer = setInterval(nextSlide, 2500);
 });
-
-// Initial position
 updatePosition(false);
 </script>
 </body>

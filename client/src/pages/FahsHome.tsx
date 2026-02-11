@@ -312,68 +312,68 @@ export default function FahsHome() {
           </h2>
           
           {/* Top Row - 4 cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 max-w-6xl mx-auto">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <img src="/images/bcare/InsureOneMin.svg" alt="تأمينك في دقيقة" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>تأمينك في دقيقة</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>نقارن لك كل عروض الأسعار بشكل فوري من كل شركات التأمين</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>نقارن لك كل عروض الأسعار بشكل فوري من كل شركات التأمين</p>
             </div>
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <img src="/images/bcare/SprateInsure.svg" alt="فصّل تأمينك" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>فصّل تأمينك</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>أنواع تأمين متعددة: تأمين ضد الغير، تأمين مميز، تأمين شامل وقيمة تحمل متنوعة</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>أنواع تأمين متعددة: تأمين ضد الغير، تأمين مميز، تأمين شامل وقيمة تحمل متنوعة</p>
             </div>
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <img src="/images/bcare/PriceLess.svg" alt="أسعار أقل" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>أسعار أقل</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>عندنا فريق يراقب كل صغيرة و كبيرة في السوق و يضمن أن سعرك الأقل و المناسب لك وفق احتياجك</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>عندنا فريق يراقب كل صغيرة و كبيرة في السوق و يضمن أن سعرك الأقل و المناسب لك وفق احتياجك</p>
             </div>
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <img src="/images/bcare/SechleInsure.svg" alt="جدول تأمينك" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>جدول تأمينك</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>نرسل لك إشعارات تذكيرية لتجديد تأمينك وتقدر تجدول تاريخ بدايته</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>نرسل لك إشعارات تذكيرية لتجديد تأمينك وتقدر تجدول تاريخ بدايته</p>
             </div>
           </div>
 
           {/* Bottom Row - 4 cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <img src="/images/bcare/Wind.svg" alt="هب ريح" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>هب ريح</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>نربط وثيقتك في أسرع وقت مع نظام المرور ونجم</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>نربط وثيقتك في أسرع وقت مع نظام المرور ونجم</p>
             </div>
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <img src="/images/bcare/DiscountsHome.svg" alt="خصومات تضبطك" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>خصومات تضبطك</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>خصومات لبعض القطاعات الحكومية وشبه الحكومية والخاصة</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>خصومات لبعض القطاعات الحكومية وشبه الحكومية والخاصة</p>
             </div>
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <img src="/images/bcare/OneWay.svg" alt="منافع تحميك" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>منافع تحميك</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>خطط تأمين متنوعة مع المرونة في تحديد المنافع الإضافية اللي تناسبك</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>خطط تأمين متنوعة مع المرونة في تحديد المنافع الإضافية اللي تناسبك</p>
             </div>
-            <div className="bg-white rounded-xl px-3 py-10 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
                 <svg className="w-10 h-10 text-[#1a73a7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>مكان واحد</h3>
-              <p className="text-base leading-relaxed" style={{ color: '#146494' }}>تدير كل وثائقك إدارة إلكترونية كاملة من مكان واحد وتجددها في أي وقت</p>
+              <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>تدير كل وثائقك إدارة إلكترونية كاملة من مكان واحد وتجددها في أي وقت</p>
             </div>
           </div>
         </div>

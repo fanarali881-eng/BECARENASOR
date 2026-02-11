@@ -263,9 +263,9 @@ export default function FahsHome() {
       </div>
 
       {/* Partners Bar */}
-      <section className="mt-10 bg-gray-50 py-6">
+      <section className="mt-10 bg-gray-50 py-6 relative z-10">
         <div className="px-4 md:px-16 lg:px-28">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 relative z-10">
             <div className="flex items-center px-5 py-6">
               {/* Right side: Authorization info */}
               <div className="flex-shrink-0 flex items-center gap-4 pl-6 border-l border-gray-200">

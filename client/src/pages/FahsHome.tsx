@@ -345,16 +345,14 @@ export default function FahsHome() {
             </div>
             <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
-                <img src="/images/bcare/OneWay.svg" alt="منافع تحميك" className="w-10 h-10" />
+                <img src="/images/bcare/Benfit.svg" alt="منافع تحميك" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>منافع تحميك</h3>
               <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>خطط تأمين متنوعة مع المرونة في تحديد المنافع الإضافية اللي تناسبك</p>
             </div>
             <div className="bg-white px-3 py-12 text-center shadow-sm hover:shadow-md transition-shadow" style={{ borderRadius: '15px' }}>
               <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
-                <svg className="w-10 h-10 text-[#1a73a7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
+                <img src="/images/bcare/OneWay.svg" alt="مكان واحد" className="w-10 h-10" />
               </div>
               <h3 className="font-bold mb-3 text-xl" style={{ color: '#146494' }}>مكان واحد</h3>
               <p className="text-lg leading-relaxed" style={{ color: '#146494' }}>تدير كل وثائقك إدارة إلكترونية كاملة من مكان واحد وتجددها في أي وقت</p>

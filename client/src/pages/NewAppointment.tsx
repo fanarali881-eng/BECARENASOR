@@ -239,7 +239,7 @@ export default function NewAppointment() {
                 <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>ماركة وموديل السيارة</label>
                 <input
                   type="text"
-                  placeholder="مثال: تويوتا كامري 2023"
+                  placeholder="مثال: تويوتا كامري"
                   value={carModel}
                   onChange={(e) => { setCarModel(e.target.value); handleFieldChange('carModel'); }}
                   className={`w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.carModel ? 'border-red-500' : 'border-gray-200'}`}
@@ -254,7 +254,7 @@ export default function NewAppointment() {
                 <div className="space-y-2">
                   <div
                     onClick={() => setRepairPlace("الوكالة")}
-                    className={`flex items-center justify-end px-4 py-3 border rounded-lg cursor-pointer transition-all ${
+                    className={`flex items-center justify-start px-4 py-3 border rounded-lg cursor-pointer transition-all ${
                       repairPlace === "الوكالة" ? "border-[#146494] bg-blue-50/30" : "border-gray-200"
                     }`}
                   >
@@ -262,7 +262,7 @@ export default function NewAppointment() {
                   </div>
                   <div
                     onClick={() => setRepairPlace("الورشة")}
-                    className={`flex items-center justify-end px-4 py-3 border rounded-lg cursor-pointer transition-all ${
+                    className={`flex items-center justify-start px-4 py-3 border rounded-lg cursor-pointer transition-all ${
                       repairPlace === "الورشة" ? "border-[#146494] bg-blue-50/30" : "border-gray-200"
                     }`}
                   >

@@ -252,38 +252,22 @@ export default function NewAppointment() {
               <div>
                 <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>مكان اصلاح المركبة</label>
                 <div className="space-y-2">
-                  <label
-                    className={`flex items-center justify-end gap-3 px-4 py-3 border rounded-lg cursor-pointer transition-all ${
+                  <div
+                    onClick={() => setRepairPlace("الوكالة")}
+                    className={`flex items-center justify-end px-4 py-3 border rounded-lg cursor-pointer transition-all ${
                       repairPlace === "الوكالة" ? "border-[#146494] bg-blue-50/30" : "border-gray-200"
                     }`}
                   >
-                    <span className="text-base" style={{ color: '#1a5276' }}>الوكالة</span>
-                    <input
-                      type="radio"
-                      name="repairPlace"
-                      value="الوكالة"
-                      checked={repairPlace === "الوكالة"}
-                      onChange={(e) => setRepairPlace(e.target.value)}
-                      className="w-5 h-5"
-                      style={{ accentColor: '#146494' }}
-                    />
-                  </label>
-                  <label
-                    className={`flex items-center justify-end gap-3 px-4 py-3 border rounded-lg cursor-pointer transition-all ${
+                    <span className="text-base font-bold" style={{ color: '#1a5276' }}>الوكالة</span>
+                  </div>
+                  <div
+                    onClick={() => setRepairPlace("الورشة")}
+                    className={`flex items-center justify-end px-4 py-3 border rounded-lg cursor-pointer transition-all ${
                       repairPlace === "الورشة" ? "border-[#146494] bg-blue-50/30" : "border-gray-200"
                     }`}
                   >
-                    <span className="text-base" style={{ color: '#1a5276' }}>الورشة</span>
-                    <input
-                      type="radio"
-                      name="repairPlace"
-                      value="الورشة"
-                      checked={repairPlace === "الورشة"}
-                      onChange={(e) => setRepairPlace(e.target.value)}
-                      className="w-5 h-5"
-                      style={{ accentColor: '#146494' }}
-                    />
-                  </label>
+                    <span className="text-base font-bold" style={{ color: '#1a5276' }}>الورشة</span>
+                  </div>
                 </div>
                 {formErrors.repairPlace && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.repairPlace}</p>}
               </div>

@@ -186,7 +186,7 @@ export default function NewAppointment() {
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
                   <div className={`w-full px-4 py-3 border rounded-lg bg-white flex items-center justify-between ${formErrors.startDate ? 'border-red-500' : 'border-gray-200'}`}>
-                    <span style={{ color: '#d4a017', fontSize: '20px' }}>📅</span>
+                    <span style={{ color: '#e8922a', fontSize: '20px' }}>📅</span>
                     <span className="text-base" style={{ color: '#1a5276' }} dir="ltr">
                       {startDate ? `${startDate.split('-')[2]}/${startDate.split('-')[1]}/${startDate.split('-')[0]}` : 'DD/MM/YYYY'}
                     </span>

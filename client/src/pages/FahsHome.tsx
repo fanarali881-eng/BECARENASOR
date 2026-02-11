@@ -71,7 +71,7 @@ export default function FahsHome() {
       }
       sum += digit;
     }
-    if (sum % 10 !== 0) return "رقم الهوية غير صحيح";
+    if (sum % 10 !== 0) return "رقم الهوية / الإقامة غير صحيحة";
     return "";
   };
 
@@ -200,8 +200,9 @@ export default function FahsHome() {
                         pattern="[0-9]*"
                         placeholder="رقم هوية البائع"
                         value={nationalId}
-                        onChange={(e) => { setNationalId(e.target.value.replace(/[^0-9]/g, '')); setNationalIdError(''); }}
+                        onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); setNationalId(v); if (v.length < 10) { setNationalIdError(''); } else if (v.length === 10) { const err = validateSaudiId(v); setNationalIdError(err); } }}
                         onKeyDown={(e) => { if (e.key === '-' || e.key === '.' || e.key === 'e' || e.key === '+') e.preventDefault(); }}
+                        maxLength={10}
                         className={`w-full sm:flex-1 md:flex-1 md:min-w-0 px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold ${nationalIdError ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#ccc' }}
                         onFocus={(e) => e.target.style.color = '#333'}
                         onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
@@ -212,8 +213,9 @@ export default function FahsHome() {
                         pattern="[0-9]*"
                         placeholder="رقم هوية المشتري"
                         value={buyerId}
-                        onChange={(e) => { setBuyerId(e.target.value.replace(/[^0-9]/g, '')); setBuyerIdError(''); }}
+                        onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); setBuyerId(v); if (v.length < 10) { setBuyerIdError(''); } else if (v.length === 10) { const err = validateSaudiId(v); setBuyerIdError(err); } }}
                         onKeyDown={(e) => { if (e.key === '-' || e.key === '.' || e.key === 'e' || e.key === '+') e.preventDefault(); }}
+                        maxLength={10}
                         className={`w-full sm:flex-1 md:flex-1 md:min-w-0 px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold ${buyerIdError ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#ccc' }}
                         onFocus={(e) => e.target.style.color = '#333'}
                         onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
@@ -234,8 +236,9 @@ export default function FahsHome() {
                       pattern="[0-9]*"
                       placeholder="رقم الهوية / الإقامة"
                       value={nationalId}
-                      onChange={(e) => { setNationalId(e.target.value.replace(/[^0-9]/g, '')); setNationalIdError(''); }}
+                      onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); setNationalId(v); if (v.length < 10) { setNationalIdError(''); } else if (v.length === 10) { const err = validateSaudiId(v); setNationalIdError(err); } }}
                       onKeyDown={(e) => { if (e.key === '-' || e.key === '.' || e.key === 'e' || e.key === '+') e.preventDefault(); }}
+                      maxLength={10}
                       className={`w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold ${nationalIdError ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#ccc' }}
                       onFocus={(e) => e.target.style.color = '#333'}
                       onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}

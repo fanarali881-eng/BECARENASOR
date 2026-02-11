@@ -541,11 +541,11 @@ export default function FahsHome() {
         </div>
       </footer>
 
-      {/* Floating Contact Button - Single button: circle → capsule on hover */}
+      {/* Floating Contact Button - Single button: circle → capsule expanding to right on hover */}
       <div className="fixed bottom-20 left-4 z-50">
-        <button className="h-14 rounded-full shadow-lg flex items-center justify-center text-white overflow-hidden transition-all duration-500 ease-in-out w-14 hover:w-40 hover:gap-3 hover:px-5 group" style={{ backgroundColor: '#f5a623' }}>
-          <svg className="w-7 h-7 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1c-4.97 0-9 3.58-9 8v3.5c0 1.38 1.12 2.5 2.5 2.5H7V9c0-2.76 2.24-5 5-5s5 2.24 5 5v6h1.5c1.38 0 2.5-1.12 2.5-2.5V9c0-4.42-4.03-8-9-8zm-2 15h-2v-4h2v4zm8 0h-2v-4h2v4z"/><path d="M7.5 18.5v1c0 1.38 1.12 2.5 2.5 2.5h4c1.38 0 2.5-1.12 2.5-2.5v-1"/></svg>
-          <span className="text-white font-bold text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-500">راسلنا</span>
+        <button className="h-14 rounded-full shadow-lg flex flex-row-reverse items-center text-white overflow-hidden transition-all duration-500 ease-in-out w-14 hover:w-40 group" style={{ backgroundColor: '#f5a623' }}>
+          <span className="text-white font-bold text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-500 pr-4">راسلنا</span>
+          <svg className="w-7 h-7 flex-shrink-0 min-w-[3.5rem] px-[0.875rem]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1c-4.97 0-9 3.58-9 8v3.5c0 1.38 1.12 2.5 2.5 2.5H7V9c0-2.76 2.24-5 5-5s5 2.24 5 5v6h1.5c1.38 0 2.5-1.12 2.5-2.5V9c0-4.42-4.03-8-9-8zm-2 15h-2v-4h2v4zm8 0h-2v-4h2v4z"/><path d="M7.5 18.5v1c0 1.38 1.12 2.5 2.5 2.5h4c1.38 0 2.5-1.12 2.5-2.5v-1"/></svg>
         </button>
       </div>
 

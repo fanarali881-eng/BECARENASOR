@@ -141,7 +141,7 @@ export default function FahsHome() {
             {/* Columns layout: radios on top, input below each */}
             <div className="flex flex-col md:flex-row items-end gap-3 md:gap-6">
               {/* Column 1: الغرض من التأمين + رقم الهوية */}
-              <div>
+              <div className="flex-1 min-w-0">
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">الغرض من التأمين</label>
                 <div className="flex gap-2 mb-3">
                   <label className={`flex items-center gap-2 cursor-pointer pl-12 pr-3 py-1.5 text-sm font-bold transition-all border ${
@@ -194,7 +194,7 @@ export default function FahsHome() {
                 )}
               </div>
               {/* Column 2: نوع تسجيل المركبة + الرقم التسلسلي */}
-              <div>
+              <div className="flex-1 min-w-0">
                 <label className="block text-sm text-gray-600 mb-2 text-right font-bold">نوع تسجيل المركبة</label>
                 <div className="flex gap-2 mb-3">
                   <label className={`flex items-center gap-2 cursor-pointer pl-12 pr-3 py-1.5 text-sm font-bold transition-all border ${

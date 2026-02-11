@@ -186,10 +186,10 @@ export default function NewAppointment() {
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
                   <div className={`w-full px-4 py-3 border rounded-lg bg-white flex items-center justify-between ${formErrors.startDate ? 'border-red-500' : 'border-gray-200'}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5a623" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     <span className="text-base" style={{ color: '#1a5276' }} dir="ltr">
                       {startDate ? `${startDate.split('-')[2]}/${startDate.split('-')[1]}/${startDate.split('-')[0]}` : 'DD/MM/YYYY'}
                     </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5a623" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                   </div>
                 </div>
                 {formErrors.startDate && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.startDate}</p>}

@@ -87,8 +87,8 @@ export default function FahsHome() {
           <div className="flex justify-start bg-white px-4 md:px-8 pt-2" style={{ position: 'relative', borderRadius: '15px 15px 0 0' }}>
             {[
               { id: "vehicles", label: "مركبات", icon: (<img src="/images/bcare/tab-car.svg" className="w-7 h-7" alt="مركبات" style={{ filter: 'inherit' }} />) },
-              { id: "medical", label: "طبي", icon: (<img src="/images/bcare/tab-stethoscope.svg" className="w-7 h-7" alt="طبي" style={{ filter: 'inherit' }} />) },
-              { id: "malpractice", label: "اخطاء طبية", icon: (<img src="/images/bcare/tab-hospital-user.svg" className="w-7 h-7" alt="اخطاء طبية" style={{ filter: 'inherit' }} />) },
+              { id: "medical", label: "طبي", icon: (<img src="/images/bcare/tab-heart-pulse.svg" className="w-7 h-7" alt="طبي" style={{ filter: 'inherit' }} />) },
+              { id: "malpractice", label: "اخطاء طبية", icon: (<img src="/images/bcare/tab-stethoscope.svg" className="w-7 h-7" alt="اخطاء طبية" style={{ filter: 'inherit' }} />) },
               { id: "travel", label: "سفر", icon: (<img src="/images/bcare/tab-plane.svg" className="w-7 h-7" alt="سفر" style={{ filter: 'inherit' }} />) },
               { id: "domestic", label: "العمالة المنزلية", icon: (<img src="/images/bcare/tab-house-user.svg" className="w-7 h-7" alt="العمالة المنزلية" style={{ filter: 'inherit' }} />) },
             ].map((tab) => (

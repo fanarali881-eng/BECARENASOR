@@ -338,9 +338,9 @@ export default function FahsHome() {
       {/* Partners Bar */}
       <section className="mt-16 md:mt-32 py-4 md:py-6 pb-6 md:pb-10 relative z-10">
         <div className="px-3 md:px-16 lg:px-28">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 relative z-10">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 relative z-10" style={{ overflow: 'hidden' }}>
             {/* Mobile: stack vertically, Desktop: horizontal */}
-            <div className="flex flex-col md:flex-row items-center px-3 md:px-5 py-4 md:py-6 gap-4 md:gap-0">
+            <div className="flex flex-col md:flex-row items-center px-3 md:px-5 py-4 md:py-6 gap-4 md:gap-0" style={{ overflow: 'hidden' }}>
               {/* Authorization info */}
               <div className="flex-shrink-0 flex items-center gap-3 md:gap-4 md:pl-6">
                 <div className="relative" style={{ paddingTop: '16px' }}>
@@ -692,7 +692,7 @@ function InsuranceLogosCarousel() {
   const offset = currentIndex * (itemWidth + gap);
 
   return (
-    <div className="flex items-center flex-1 min-w-0 mt-3 md:mt-0" dir="ltr">
+    <div className="flex items-center flex-1 min-w-0 mt-3 md:mt-0" dir="ltr" style={{ overflow: 'hidden' }}>
       <button
         onClick={handlePrev}
         className="flex-shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-full bg-gray-50 shadow flex items-center justify-center text-[#146494] hover:bg-gray-100 ml-2 md:ml-3"

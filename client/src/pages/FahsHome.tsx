@@ -367,25 +367,43 @@ export default function FahsHome() {
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 md:mb-14" style={{ color: primaryBlue }}>
             ليش بي كير خيارك الأول في التأمين؟
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            {[
-              { title: "منك وفيك", desc: "منصة سعودية 100%" },
-              { title: "عروض تفهمك", desc: "عروض مخصصة لاحتياجاتك" },
-              { title: "سعر يرضيك", desc: "أفضل الأسعار في السوق" },
-              { title: "إصدار سريع", desc: "إصدار فوري للوثيقة" },
-              { title: "نقّسط تأمينك", desc: "خيارات تقسيط مرنة" },
-              { title: "نفزع لك", desc: "دعم فني على مدار الساعة" },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center" style={{ backgroundColor: '#e8f4fd' }}>
-                  <svg className="w-8 h-8" style={{ color: primaryBlue }} fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                  </svg>
-                </div>
-                <h3 className="font-bold text-gray-800 text-sm md:text-base mb-1">{item.title}</h3>
-                <p className="text-gray-500 text-xs md:text-sm">{item.desc}</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-16 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <img src="/images/bcare/saudi.svg" alt="منك وفيك" className="w-12 h-12" />
               </div>
-            ))}
+              <h3 className="font-bold text-lg" style={{ color: '#146494' }}>منك وفيك</h3>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <img src="/images/bcare/catalog.svg" alt="عروض تفهمك" className="w-12 h-12" />
+              </div>
+              <h3 className="font-bold text-lg" style={{ color: '#146494' }}>عروض تفهمك</h3>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <img src="/images/bcare/payments_FILL0_wght400_GRAD0_opsz48.svg" alt="سعر يرضيك" className="w-12 h-12" />
+              </div>
+              <h3 className="font-bold text-lg" style={{ color: '#146494' }}>سعر يرضيك</h3>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <img src="/images/bcare/Group6518.svg" alt="إصدار سريع" className="w-12 h-12" />
+              </div>
+              <h3 className="font-bold text-lg" style={{ color: '#146494' }}>إصدار سريع</h3>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <img src="/images/bcare/tachometer-alt-fastest.svg" alt="نقّسط تأمينك" className="w-12 h-12" />
+              </div>
+              <h3 className="font-bold text-lg" style={{ color: '#146494' }}>نقّسط تأمينك</h3>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <img src="/images/bcare/flame.svg" alt="نفزع لك" className="w-12 h-12" />
+              </div>
+              <h3 className="font-bold text-lg" style={{ color: '#146494' }}>نفزع لك</h3>
+            </div>
           </div>
         </div>
       </section>

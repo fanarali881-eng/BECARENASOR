@@ -317,13 +317,15 @@ export default function FahsHome() {
                 </button>
                 <div className="flex items-center gap-2 mt-2" dir="rtl">
                   <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="w-4 h-4 flex-shrink-0" />
-                  <label htmlFor="agree" className="text-xs sm:text-sm cursor-pointer relative group" style={{ color: '#1a5276', fontWeight: 400 }}>
+                  <label htmlFor="agree" className="text-xs sm:text-sm cursor-pointer relative" style={{ color: '#1a5276', fontWeight: 400 }}>
                     أوافق على منح حق الاستعلام
-                    <div className="hidden group-hover:block absolute top-full right-0 mt-2 rounded-lg shadow-lg p-3 text-right text-sm leading-relaxed z-50" style={{ backgroundColor: '#f5f5f5', color: '#1a5276', fontWeight: 400, whiteSpace: 'normal', width: '300px', maxWidth: '80vw' }}>
-                      أوافق على منح شركة عناية الوسيط الحق في الاستعلام من شركة نجم و/أو مركز المعلومات الوطني عن بياناتي
-                    </div>
                   </label>
                 </div>
+                {agreed && (
+                  <div className="mt-2 rounded-lg shadow-lg p-3 text-right text-sm leading-relaxed z-50" style={{ backgroundColor: '#f5f5f5', color: '#1a5276', fontWeight: 400, whiteSpace: 'normal', maxWidth: '100%' }}>
+                    أوافق على منح شركة عناية الوسيط الحق في الاستعلام من شركة نجم و/أو مركز المعلومات الوطني عن بياناتي
+                  </div>
+                )}
               </div>
             </div>
           </div>

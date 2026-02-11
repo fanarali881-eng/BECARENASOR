@@ -273,8 +273,8 @@ export default function FahsHome() {
             <div className="flex items-center px-5 py-6">
               {/* Right side: Authorization info */}
               <div className="flex-shrink-0 flex items-center gap-4 pl-6 border-l border-gray-200">
-                <div className="flex flex-col items-end">
-                  <span className="text-xs font-bold mb-0" style={{ color: '#146494' }}>مصرح من:</span>
+                <div className="relative">
+                  <span className="absolute text-xs font-bold" style={{ color: '#146494', top: '-14px', right: '0' }}>مصرح من:</span>
                   <img src="/images/bcare/SaudiCentralImage.svg" alt="هيئة التأمين" className="h-12 md:h-14" />
                 </div>
                 <div className="h-16 w-px bg-gray-300"></div>

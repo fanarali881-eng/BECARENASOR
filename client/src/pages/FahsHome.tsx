@@ -6,6 +6,7 @@ export default function FahsHome() {
   const [insuranceType, setInsuranceType] = useState("new");
   const [vehicleType, setVehicleType] = useState("form");
   const [nationalId, setNationalId] = useState("");
+  const [buyerId, setBuyerId] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
   const [captchaInput, setCaptchaInput] = useState("");
   const [agreed, setAgreed] = useState(false);
@@ -156,16 +157,41 @@ export default function FahsHome() {
                     <span>نقل ملكية</span>
                   </label>
                 </div>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="رقم الهوية / الإقامة"
-                  value={nationalId}
-                  onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
-                  onFocus={(e) => e.target.style.color = '#333'}
-                  onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
-                />
+                {insuranceType === "transfer" ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="رقم هوية البائع"
+                      value={nationalId}
+                      onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
+                      className="w-1/2 px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                      onFocus={(e) => e.target.style.color = '#333'}
+                      onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
+                    />
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="رقم هوية المشتري"
+                      value={buyerId}
+                      onChange={(e) => setBuyerId(e.target.value.replace(/\D/g, ''))}
+                      className="w-1/2 px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                      onFocus={(e) => e.target.style.color = '#333'}
+                      onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
+                    />
+                  </div>
+                ) : (
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="رقم الهوية / الإقامة"
+                    value={nationalId}
+                    onChange={(e) => setNationalId(e.target.value.replace(/\D/g, ''))}
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                    onFocus={(e) => e.target.style.color = '#333'}
+                    onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
+                  />
+                )}
               </div>
               {/* Column 2: نوع تسجيل المركبة + الرقم التسلسلي */}
               <div>

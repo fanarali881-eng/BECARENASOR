@@ -65,8 +65,8 @@ export default function FahsHome() {
       {/* Hero Section - Blue background */}
       <section className="relative" style={{ backgroundColor: primaryBlue, minHeight: '460px', overflow: 'visible' }}>
         {/* Background decorative SVGs - white on blue */}
-        <img src="/images/bcare/LeftBackground.svg" alt="" className="absolute left-0 top-0 pointer-events-none z-[1]" style={{ height: '140%', opacity: 0.2 }} />
-        <img src="/images/bcare/RightBackground.svg" alt="" className="absolute right-0 top-0 pointer-events-none z-[1]" style={{ height: '140%', opacity: 0.2 }} />
+        <img src="/images/bcare/LeftBackground.svg" alt="" className="absolute left-0 top-0 pointer-events-none z-[1]" style={{ height: '140%', opacity: 0.12 }} />
+        <img src="/images/bcare/RightBackground.svg" alt="" className="absolute right-0 top-0 pointer-events-none z-[1]" style={{ height: '140%', opacity: 0.12 }} />
         
         <div className="container mx-auto px-4 lg:px-8 pt-12 pb-32 relative z-10 text-center">
           <h1 className="text-2xl md:text-4xl lg:text-[42px] font-bold text-white leading-tight mb-4" style={{ lineHeight: '1.4' }}>

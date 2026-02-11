@@ -8,6 +8,8 @@ export default function FahsHome() {
   const [nationalId, setNationalId] = useState("");
   const [buyerId, setBuyerId] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [customsNumber, setCustomsNumber] = useState("");
+  const [manufactureYear, setManufactureYear] = useState("");
   const [captchaInput, setCaptchaInput] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -210,21 +212,56 @@ export default function FahsHome() {
                     <span>بطاقة جمركية</span>
                   </label>
                 </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    placeholder="الرقم التسلسلى"
-                    value={serialNumber}
-                    onChange={(e) => setSerialNumber(e.target.value.replace(/\D/g, ''))}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
-                    onFocus={(e) => e.target.style.color = '#333'}
-                    onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
-                  />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                  </span>
-                </div>
+                {vehicleType === "customs" ? (
+                  <div className="flex gap-2">
+                    <div className="flex-1 relative">
+                      <select
+                        value={manufactureYear}
+                        onChange={(e) => setManufactureYear(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold appearance-none" style={{ color: manufactureYear ? '#333' : '#ccc' }}
+                      >
+                        <option value="" disabled>سنة صنع المركبة</option>
+                        {Array.from({ length: 30 }, (_, i) => 2026 - i).map(y => (
+                          <option key={y} value={y}>{y}</option>
+                        ))}
+                      </select>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                      </span>
+                    </div>
+                    <div className="flex-1 relative">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="الرقم الجمركي"
+                        value={customsNumber}
+                        onChange={(e) => setCustomsNumber(e.target.value.replace(/\D/g, ''))}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                        onFocus={(e) => e.target.style.color = '#333'}
+                        onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
+                      />
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="الرقم التسلسلى"
+                      value={serialNumber}
+                      onChange={(e) => setSerialNumber(e.target.value.replace(/\D/g, ''))}
+                      className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold" style={{ color: '#ccc' }}
+                      onFocus={(e) => e.target.style.color = '#333'}
+                      onBlur={(e) => { if (!e.target.value) e.target.style.color = '#ccc' }}
+                    />
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    </span>
+                  </div>
+                )}
               </div>
               {/* Column 3: رمز التحقق */}
               <div className="flex-shrink-0">

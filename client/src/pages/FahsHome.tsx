@@ -259,7 +259,7 @@ export default function FahsHome() {
 
       {/* Decorative SVGs on white background below the card */}
       <div className="relative" style={{ height: '0px', overflow: 'visible' }}>
-        <img src="/images/bcare/LeftBackground-blue.svg" alt="" className="pointer-events-none" style={{ height: '700px', opacity: 0.12, position: 'absolute', left: '5%', top: '-550px', zIndex: 1 }} />
+        <img src="/images/bcare/LeftBackground-blue.svg" alt="" className="pointer-events-none" style={{ height: '700px', opacity: 0.12, position: 'absolute', left: '1%', top: '-500px', zIndex: 1 }} />
       </div>
 
       {/* Partners Bar */}

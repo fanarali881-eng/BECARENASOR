@@ -411,62 +411,71 @@ export default function FahsHome() {
       {/* Footer */}
       <footer className="text-white pt-8 md:pt-12 pb-6" style={{ backgroundColor: footerDark }}>
         <div className="container mx-auto px-4 lg:px-8">
-          {/* Top Section - 5 columns */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-            {/* Column 1: Logo + Phone + App Stores stacked */}
-            <div className="text-right">
-              <img src="/images/bcare/Bcarelogo.svg" alt="بي كير" className="h-10 mb-3 brightness-0 invert" />
-              <p className="text-white/80 text-sm mb-4" dir="ltr">8001180044</p>
-              <div className="flex flex-col gap-2 mt-2">
-                <img src="/images/bcare/googlestore.svg" alt="Google Play" className="h-9 w-fit" />
-                <img src="/images/bcare/applestore.svg" alt="App Store" className="h-9 w-fit" />
-                <img src="/images/bcare/huaweistore.svg" alt="AppGallery" className="h-9 w-fit" />
+          {/* Top Section */}
+          <div className="flex flex-col md:flex-row gap-6 mb-8">
+            {/* Right side: Logo + Phone + Stores + Payment */}
+            <div className="flex flex-col md:flex-row gap-6 md:items-start">
+              {/* BCare Logo + Phone */}
+              <div className="text-right flex-shrink-0">
+                <img src="/images/bcare/Bcarelogo.svg" alt="بي كير" className="h-10 mb-3 brightness-0 invert" />
+                <p className="text-white text-lg font-bold mb-3" dir="ltr">☎ 8001180044</p>
+                {/* Payment Methods */}
+                <img src="/images/bcare/PaymentMethods1.svg" alt="طرق الدفع" className="h-8 mt-3" />
+              </div>
+              {/* App Stores stacked */}
+              <div className="flex flex-col gap-2 flex-shrink-0">
+                <img src="/images/bcare/googlestore.svg" alt="Google Play" className="h-10 w-fit" />
+                <img src="/images/bcare/applestore.svg" alt="App Store" className="h-10 w-fit" />
+                <img src="/images/bcare/huaweistore.svg" alt="AppGallery" className="h-10 w-fit" />
               </div>
             </div>
 
-            {/* Column 2: عن بي كير */}
-            <div className="text-right">
-              <h3 className="font-bold mb-4 text-base">عن بي كير</h3>
-              <ul className="space-y-2 text-sm text-white/80">
-                <li><a href="#" className="hover:text-white hover:underline">خصومات وريف</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">سياسة الخصوصية</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">الشروط والأحكام</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">وظائف</a></li>
-              </ul>
-            </div>
+            {/* 4 Text Columns */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 flex-1">
+              {/* عن بي كير */}
+              <div className="text-right">
+                <h3 className="font-bold mb-4 text-base">عن بي كير</h3>
+                <ul className="space-y-2 text-sm text-white/80">
+                  <li><a href="#" className="hover:text-white hover:underline">خصومات وريف</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">سياسة الخصوصية</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">الشروط والأحكام</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">وظائف</a></li>
+                </ul>
+              </div>
 
-            {/* Column 3: منتجاتنا */}
-            <div className="text-right">
-              <h3 className="font-bold mb-4 text-base">منتجاتنا</h3>
-              <ul className="space-y-2 text-sm text-white/80">
-                <li><a href="#" className="hover:text-white hover:underline">تأمين المركبات</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">التأمين الطبي</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">تأمين السفر</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">تأمين الأخطاء الطبية</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">تأمين العمالة المنزلية</a></li>
-              </ul>
-            </div>
+              {/* منتجاتنا */}
+              <div className="text-right">
+                <h3 className="font-bold mb-4 text-base">منتجاتنا</h3>
+                <ul className="space-y-2 text-sm text-white/80">
+                  <li><a href="#" className="hover:text-white hover:underline">تأمين المركبات</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">التأمين الطبي</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">تأمين السفر</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">تأمين الأخطاء الطبية</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">تأمين العمالة المنزلية</a></li>
+                </ul>
+              </div>
 
-            {/* Column 4: الدعم الفني */}
-            <div className="text-right">
-              <h3 className="font-bold mb-4 text-base">الدعم الفني</h3>
-              <ul className="space-y-2 text-sm text-white/80">
-                <li><a href="#" className="hover:text-white hover:underline">المدونة</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">إلغاء وثيقتك</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">رفع تذكرة</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">اطبع وثيقتك</a></li>
-              </ul>
-            </div>
+              {/* الدعم الفني */}
+              <div className="text-right">
+                <h3 className="font-bold mb-4 text-base">الدعم الفني</h3>
+                <ul className="space-y-2 text-sm text-white/80">
+                  <li><a href="#" className="hover:text-white hover:underline">المدونة</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">إلغاء وثيقتك</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">رفع تذكرة</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">اطبع وثيقتك</a></li>
+                </ul>
+              </div>
 
-            {/* Column 5: روابط مهمة */}
-            <div className="text-right">
-              <h3 className="font-bold mb-4 text-base">روابط مهمة</h3>
-              <ul className="space-y-2 text-sm text-white/80">
-                <li><a href="#" className="hover:text-white hover:underline">هيئة التأمين</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">طريقة رفع شكوى لهيئة التأمين</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">قواعد ولوائح هيئة التأمين</a></li>
-                <li><a href="#" className="hover:text-white hover:underline">شهادة ضريبة القيمة المضافة</a></li>
-              </ul>
+              {/* روابط مهمة */}
+              <div className="text-right">
+                <h3 className="font-bold mb-4 text-base">روابط مهمة</h3>
+                <ul className="space-y-2 text-sm text-white/80">
+                  <li><a href="#" className="hover:text-white hover:underline">هيئة التأمين</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">طريقة رفع شكوى لهيئة التأمين</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">قواعد ولوائح هيئة التأمين</a></li>
+                  <li><a href="#" className="hover:text-white hover:underline">شهادة ضريبة القيمة المضافة</a></li>
+                </ul>
+              </div>
             </div>
           </div>
 

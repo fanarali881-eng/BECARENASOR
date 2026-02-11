@@ -225,7 +225,7 @@ export default function NewAppointment() {
                 {(valueError || formErrors.estimatedValue) && (
                   <p className="text-red-500 text-xs mt-1 text-right">{valueError || formErrors.estimatedValue}</p>
                 )}
-                <p className="text-gray-400 text-xs mt-1 text-right">القيمة يجب أن تكون بين 10,000 و 1,000,000 ريال</p>
+
               </div>
 
               {/* سنة صنع المركبة */}

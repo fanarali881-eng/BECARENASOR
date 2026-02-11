@@ -222,7 +222,7 @@ export default function FahsHome() {
                       >
                         <option value="" disabled>سنة صنع المركبة</option>
                         {Array.from({ length: 2026 - 1919 + 1 }, (_, i) => 2026 - i).map(y => (
-                          <option key={y} value={y} style={{ color: '#1a5276' }}>{y}</option>
+                          <option key={y} value={y} style={{ color: '#1a5276', fontWeight: 'bold' }}>{y}</option>
                         ))}
                       </select>
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">

@@ -8,6 +8,9 @@ interface Message {
   timestamp: Date;
 }
 
+// Export a ref to control chat from outside
+export let openAmerChat: () => void = () => {};
+
 export default function AmerChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -97,40 +100,14 @@ export default function AmerChat() {
     }
   };
 
+  // Expose open function
+  useEffect(() => {
+    openAmerChat = () => setIsOpen(true);
+    return () => { openAmerChat = () => {}; };
+  }, []);
+
   return (
     <>
-      {/* Chat Button */}
-      <div
-        className="fixed right-4 top-1/2 -translate-y-1/2 z-50 cursor-pointer"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={() => setIsOpen(true)}
-      >
-        {/* New Message Notification */}
-        {hasNewAdminMessage && (
-          <div className="absolute -top-12 left-0 bg-red-500 text-white text-sm px-3 py-1 rounded-lg shadow-lg animate-bounce whitespace-nowrap">
-            رسالة من الدعم
-            <div className="absolute bottom-0 left-4 transform translate-y-1/2 rotate-45 w-2 h-2 bg-red-500"></div>
-          </div>
-        )}
-        
-        <div
-          className={`flex items-center gap-2 bg-white rounded-full shadow-lg transition-all duration-300 ${
-            isHovered ? "px-4 py-2" : "p-2"
-          } ${hasNewAdminMessage ? "ring-2 ring-red-500 ring-offset-2" : ""}`}
-        >
-          <img
-            src="/images/chat-logo.png"
-            alt="مركز سلامة المركبات"
-            className="w-8 h-8 md:w-10 md:h-10 object-contain rounded-full"
-          />
-          {isHovered && (
-            <span className="text-gray-700 font-medium whitespace-nowrap animate-fade-in">
-              محادثة
-            </span>
-          )}
-        </div>
-      </div>
 
       {/* Chat Window */}
       {isOpen && (

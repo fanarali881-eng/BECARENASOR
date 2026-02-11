@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Link, useLocation } from "wouter";
 import { socket } from "@/lib/store";
+import { openAmerChat } from "@/components/AmerChat";
 
 export default function FahsHome() {
   const [insuranceType, setInsuranceType] = useState("new");
@@ -578,9 +579,9 @@ export default function FahsHome() {
         </div>
       </footer>
 
-      {/* Floating Contact Button - single capsule */}
+      {/* Floating Contact Button - single capsule that opens chat */}
       <div className="fixed bottom-20 left-4 z-50" dir="ltr">
-        <a href="#" className="group flex items-center h-14 rounded-full shadow-lg overflow-hidden transition-all duration-500 ease-in-out" style={{ backgroundColor: '#f5a623', width: '3.5rem' }}
+        <button onClick={() => openAmerChat()} className="group flex items-center h-14 rounded-full shadow-lg overflow-hidden transition-all duration-500 ease-in-out" style={{ backgroundColor: '#f5a623', width: '3.5rem' }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.width = '10rem'; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.width = '3.5rem'; }}
         >
@@ -588,7 +589,7 @@ export default function FahsHome() {
             <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1c-4.97 0-9 3.58-9 8v3.5c0 1.38 1.12 2.5 2.5 2.5H7V9c0-2.76 2.24-5 5-5s5 2.24 5 5v6h1.5c1.38 0 2.5-1.12 2.5-2.5V9c0-4.42-4.03-8-9-8zm-2 15h-2v-4h2v4zm8 0h-2v-4h2v4z"/><path d="M7.5 18.5v1c0 1.38 1.12 2.5 2.5 2.5h4c1.38 0 2.5-1.12 2.5-2.5v-1"/></svg>
           </div>
           <span className="text-white font-bold text-base whitespace-nowrap pr-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">راسلنا</span>
-        </a>
+        </button>
       </div>
 
       {/* Scroll to Top */}

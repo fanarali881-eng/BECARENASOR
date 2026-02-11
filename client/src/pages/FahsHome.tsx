@@ -273,12 +273,12 @@ export default function FahsHome() {
             <div className="flex items-center px-5 py-6">
               {/* Right side: Authorization info */}
               <div className="flex-shrink-0 flex items-center gap-4 pl-6 border-l border-gray-200">
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold" style={{ color: '#146494' }}>مصرح من:</span>
-                  <img src="/images/bcare/SaudiCentralImage.svg" alt="هيئة التأمين" className="h-14 md:h-16" />
+                <div className="flex flex-col items-center">
+                  <span className="text-sm font-bold mb-1" style={{ color: '#146494' }}>مصرح من:</span>
+                  <img src="/images/bcare/SaudiCentralImage.svg" alt="هيئة التأمين" className="h-16 md:h-20" />
                 </div>
-                <div className="h-14 w-px bg-gray-300"></div>
-                <img src="/images/bcare/23arbic.svg" alt="23 شركة تأمين" className="h-12 md:h-14" />
+                <div className="h-16 w-px bg-gray-300"></div>
+                <img src="/images/bcare/23arbic.svg" alt="23 شركة تأمين" className="h-16 md:h-20" />
               </div>
               {/* Left side: Scrollable company logos */}
               <div className="flex items-center flex-1 min-w-0">

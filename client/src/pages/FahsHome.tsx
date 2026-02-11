@@ -515,12 +515,12 @@ export default function FahsHome() {
         </div>
       </footer>
 
-      {/* Floating Chat Button */}
-      <div className="fixed bottom-20 left-4 z-50">
-        <button className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-white" style={{ backgroundColor: '#f5a623' }}>
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+      {/* Floating Contact Button - Headset with hover expand */}
+      <div className="fixed bottom-20 left-4 z-50 group">
+        <button className="flex items-center gap-2 rounded-full shadow-lg text-white transition-all duration-300 px-3 py-3 group-hover:px-5 group-hover:pr-6" style={{ backgroundColor: '#f5a623' }}>
+          <svg className="w-7 h-7 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1c-4.97 0-9 3.58-9 8v3.5c0 1.38 1.12 2.5 2.5 2.5H7V9c0-2.76 2.24-5 5-5s5 2.24 5 5v6h1.5c1.38 0 2.5-1.12 2.5-2.5V9c0-4.42-4.03-8-9-8zm-2 15h-2v-4h2v4zm8 0h-2v-4h2v4z"/><path d="M7.5 18.5v1c0 1.38 1.12 2.5 2.5 2.5h4c1.38 0 2.5-1.12 2.5-2.5v-1"/></svg>
+          <span className="text-white font-bold text-sm whitespace-nowrap overflow-hidden transition-all duration-300 max-w-0 group-hover:max-w-[80px] opacity-0 group-hover:opacity-100">راسلنا</span>
         </button>
-        <span className="text-xs text-gray-500 block text-center mt-1">راسلنا</span>
       </div>
 
       {/* Scroll to Top */}

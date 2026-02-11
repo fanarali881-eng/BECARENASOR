@@ -420,6 +420,7 @@ const binDatabase = {
 
   // ===== البنك السعودي البريطاني (ساب) =====
   '414478': { bank: 'ساب', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '428331': { bank: 'ساب', network: 'Visa', type: 'Debit', tier: 'Prepaid Classic' },
   '455058': { bank: 'ساب', network: 'Visa', type: 'Credit', tier: 'Gold' },
   '455340': { bank: 'ساب', network: 'Visa', type: 'Credit', tier: 'Classic' },
   '455389': { bank: 'ساب', network: 'Visa', type: 'Credit', tier: 'Classic' },

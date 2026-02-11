@@ -343,6 +343,7 @@ export default function FahsHome() {
                 <input
                   type="text"
                   inputMode="numeric"
+                  dir="ltr"
                   value={captchaInput}
                   onChange={(e) => { setCaptchaInput(e.target.value.replace(/\D/g, '')); setCaptchaError(false); }}
                   className="flex-1 md:w-24 px-3 py-3 bg-white text-center focus:outline-none text-base font-bold border-none"
@@ -354,6 +355,7 @@ export default function FahsHome() {
                   </svg>
                 </button>
                 <div 
+                  dir="ltr"
                   className="px-3 py-2 select-none flex items-center justify-center gap-0.5 flex-shrink-0"
                   style={captchaVisual.bg}
                 >

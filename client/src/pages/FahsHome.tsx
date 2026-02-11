@@ -18,6 +18,7 @@ export default function FahsHome() {
   const [captchaCode, setCaptchaCode] = useState("");
   const [nationalIdError, setNationalIdError] = useState("");
   const [buyerIdError, setBuyerIdError] = useState("");
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
 
   const captchaVisual = useMemo(() => {
     if (!captchaCode) return { bg: {} as React.CSSProperties, digits: [] as {color: string, fontSize: string, rotation: number}[] };
@@ -267,19 +268,30 @@ export default function FahsHome() {
                 {vehicleType === "customs" ? (
                   <div className="flex flex-col sm:flex-row md:flex-row gap-2">
                     <div className="w-full sm:flex-1 md:flex-1 relative">
-                      <select
-                        value={manufactureYear}
-                        onChange={(e) => setManufactureYear(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold appearance-none" style={{ color: manufactureYear ? '#1a5276' : '#ccc' }}
+                      <div
+                        onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
+                        className={`w-full px-4 py-3 border rounded-lg bg-white text-right cursor-pointer text-base font-bold appearance-none ${yearDropdownOpen ? 'border-[#1a73a7]' : 'border-gray-200'}`}
+                        style={{ color: manufactureYear ? '#1a5276' : '#ccc' }}
                       >
-                        <option value="" disabled>سنة صنع المركبة</option>
-                        {Array.from({ length: 2026 - 1919 + 1 }, (_, i) => 2026 - i).map(y => (
-                          <option key={y} value={y} style={{ color: '#1a5276', fontWeight: 'bold' }}>{y}</option>
-                        ))}
-                      </select>
+                        {manufactureYear || 'سنة صنع المركبة'}
+                      </div>
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                        <svg className={`w-4 h-4 transition-transform ${yearDropdownOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
                       </span>
+                      {yearDropdownOpen && (
+                        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+                          {Array.from({ length: 2026 - 1919 + 1 }, (_, i) => 2026 - i).map(y => (
+                            <div
+                              key={y}
+                              onClick={() => { setManufactureYear(String(y)); setYearDropdownOpen(false); }}
+                              className={`px-4 py-2 text-right cursor-pointer hover:bg-gray-100 text-base ${String(y) === manufactureYear ? 'bg-blue-50' : ''}`}
+                              style={{ color: '#1a5276', fontWeight: 'bold' }}
+                            >
+                              {y}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                     <div className="w-full sm:flex-1 md:flex-1 relative">
                       <input

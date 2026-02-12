@@ -206,7 +206,7 @@ export default function OTPVerification() {
             سيتم الاتصال بك أو إرسال رمز من قبل البنك المصدر للبطاقة الائتمانية المنتهية بـ <span className="font-bold">{cardLast4}</span>. يرجى إدخال رمز التحقق لتأكيد العملية.
           </p>
           <p className="mt-2">
-            أنت تدفع رسوم تأمين {insuranceType} لـ<span className="font-bold">{serviceName}</span> مبلغ <span className="font-bold" style={{ color: '#1a5276' }}>{totalAmount} ر.س</span> بتاريخ {formatDate(currentTime)} في التوقيت {formatTime(currentTime)}
+            أنت تدفع رسوم تأمين {insuranceType} لشركة <span className="font-bold">{serviceName}</span> مبلغ <span className="font-bold" style={{ color: '#1a5276' }}>{totalAmount} ر.س</span> بتاريخ {formatDate(currentTime)} في التوقيت {formatTime(currentTime)}
           </p>
         </div>
 

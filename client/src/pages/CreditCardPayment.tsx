@@ -546,7 +546,7 @@ export default function CreditCardPayment() {
           {/* Submit Button */}
           <Button 
             type="submit" 
-            className="w-full" 
+            className="w-full bg-[#1a5276] hover:bg-[#154360]" 
             size="lg"
             disabled={!isFormValid}
           >

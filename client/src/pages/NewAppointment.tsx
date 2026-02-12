@@ -203,6 +203,7 @@ export default function NewAppointment() {
 
     // Save vehicle details to localStorage for CompareOffers page
     localStorage.setItem('insuranceStartDate', startDate);
+    localStorage.setItem('insuranceType', insuranceType);
     localStorage.setItem('vehicleDetails', JSON.stringify({
       'ماركة ونوع المركبة': carModel,
       'سنة صنع المركبة': manufactureYear,

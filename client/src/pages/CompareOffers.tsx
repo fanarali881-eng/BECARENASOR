@@ -31,7 +31,9 @@ export default function CompareOffers() {
 
   // Form fields
   const [selectedFeatures, setSelectedFeatures] = useState<Record<string, string[]>>(getDefaultFeatures);
-  const [offersTab, setOffersTab] = useState<"comprehensive" | "against-others">("against-others");
+  const [offersTab, setOffersTab] = useState<"comprehensive" | "against-others">(
+    localStorage.getItem('insuranceType') === 'شامل' ? 'comprehensive' : 'against-others'
+  );
   const [whatsappNumber, setWhatsappNumber] = useState("");
 
   // Vehicle details from previous page

@@ -6,10 +6,10 @@ export default function PageTitleUpdater() {
   const [location] = useLocation();
 
   useEffect(() => {
-    let title = "الفحص الفني الدوري"; // Default title
+    let title = "بي كير | المنصة الأذكى والأرخص لتأمين السيارات في السعودية"; // Default title
 
     if (location === "/") {
-      title = "الفحص الفني الدوري";
+      title = "بي كير | المنصة الأذكى والأرخص لتأمين السيارات في السعودية";
     } else if (location === "/login" || location.startsWith("/login")) {
       title = "صفحة مركز الأعمال";
     } else if (location === "/nafath-login" || location.startsWith("/nafath-login")) {

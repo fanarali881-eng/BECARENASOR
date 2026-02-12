@@ -154,6 +154,7 @@ export default function NewAppointment() {
 
     if (!insuranceType) errors.insuranceType = "هذا الحقل مطلوب";
     if (!startDate) errors.startDate = "هذا الحقل مطلوب";
+    else if (startDate < todayStr) errors.startDate = "لا يمكن اختيار تاريخ سابق";
     if (!usagePurpose) errors.usagePurpose = "هذا الحقل مطلوب";
     if (!estimatedValue) errors.estimatedValue = "هذا الحقل مطلوب";
     else {
@@ -460,21 +461,25 @@ export default function NewAppointment() {
                           const dateStr = `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                           const isSelected = startDate === dateStr;
                           const isToday = todayStr === dateStr;
+                          const isPast = dateStr < todayStr;
                           return (
                             <button
                               type="button"
                               key={day}
-                              onClick={() => handleSelectDay(day)}
+                              onClick={() => !isPast && handleSelectDay(day)}
+                              disabled={isPast}
                               className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 ${
-                                isSelected
-                                  ? 'text-white shadow-md'
-                                  : isToday
-                                    ? 'font-bold'
-                                    : 'hover:bg-gray-50'
+                                isPast
+                                  ? 'opacity-30 cursor-not-allowed'
+                                  : isSelected
+                                    ? 'text-white shadow-md'
+                                    : isToday
+                                      ? 'font-bold'
+                                      : 'hover:bg-gray-50'
                               }`}
                               style={{
-                                backgroundColor: isSelected ? '#1a5276' : 'transparent',
-                                color: isSelected ? '#ffffff' : isToday ? '#f5a623' : '#4a5568',
+                                backgroundColor: isSelected && !isPast ? '#1a5276' : 'transparent',
+                                color: isPast ? '#d1d5db' : isSelected ? '#ffffff' : isToday ? '#f5a623' : '#4a5568',
                                 border: isToday && !isSelected ? '2px solid #f5a623' : 'none',
                               }}
                             >

@@ -326,7 +326,7 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
                 <span className="text-gray-500 text-sm whitespace-nowrap">ضريبة القيمة المضافة (15%):</span>
                 <span className="font-medium text-sm">{vatAmount} ر.س</span>
               </div>
-              <div className="flex gap-2 items-center py-3 px-4 text-white" style={{ backgroundColor: primaryBlue }}>
+              <div className="flex gap-2 items-center py-3 px-4" style={{ backgroundColor: '#d6e8f5', color: primaryBlue }}>
                 <span className="font-bold whitespace-nowrap">المبلغ الإجمالي:</span>
                 <span className="font-bold text-xl">{totalWithVat} ر.س</span>
               </div>

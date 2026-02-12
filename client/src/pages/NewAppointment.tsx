@@ -152,6 +152,15 @@ export default function NewAppointment() {
   const handleSubmit = () => {
     const errors: Record<string, string> = {};
 
+    // Personal info validation
+    if (!sellerName.trim()) errors.sellerName = "هذا الحقل مطلوب";
+    if (!sellerBirthDay || !sellerBirthMonth || !sellerBirthYear) errors.sellerBirth = "تاريخ الميلاد مطلوب";
+    if (isTransfer) {
+      if (!buyerName.trim()) errors.buyerName = "هذا الحقل مطلوب";
+      if (!buyerBirthDay || !buyerBirthMonth || !buyerBirthYear) errors.buyerBirth = "تاريخ الميلاد مطلوب";
+    }
+
+    // Insurance details validation
     if (!insuranceType) errors.insuranceType = "هذا الحقل مطلوب";
     if (!startDate) errors.startDate = "هذا الحقل مطلوب";
     else if (startDate < todayStr) errors.startDate = "لا يمكن اختيار تاريخ سابق";
@@ -311,24 +320,26 @@ export default function NewAppointment() {
                   </div>
                   <div>
                     <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>الاسم الكامل</label>
-                    <input type="text" value={sellerName} onChange={(e) => { const val = e.target.value; if (val === '' || /^[a-zA-Z\u0600-\u06FF\s]+$/.test(val)) { setSellerName(val); } }} placeholder="أدخل الاسم الكامل" className="w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold border-gray-200" style={{ color: '#1a5276' }} />
+                    <input type="text" value={sellerName} onChange={(e) => { const val = e.target.value; if (val === '' || /^[a-zA-Z\u0600-\u06FF\s]+$/.test(val)) { setSellerName(val); handleFieldChange('sellerName'); } }} placeholder="أدخل الاسم الكامل" className={`w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold ${formErrors.sellerName ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276' }} />
+                    {formErrors.sellerName && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.sellerName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>تاريخ الميلاد (هجري)</label>
                     <div className="flex gap-3" dir="ltr">
-                      <select value={sellerBirthYear} onChange={(e) => setSellerBirthYear(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={sellerBirthYear} onChange={(e) => { setSellerBirthYear(e.target.value); handleFieldChange('sellerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.sellerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>السنة</option>
                         {Array.from({ length: 50 }, (_, i) => 1429 - i).map(y => (<option key={y} value={y}>{y}</option>))}
                       </select>
-                      <select value={sellerBirthMonth} onChange={(e) => setSellerBirthMonth(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={sellerBirthMonth} onChange={(e) => { setSellerBirthMonth(e.target.value); handleFieldChange('sellerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.sellerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>الشهر</option>
                         {[{v:1,n:'1 - محرم'},{v:2,n:'2 - صفر'},{v:3,n:'3 - ربيع الأول'},{v:4,n:'4 - ربيع الثاني'},{v:5,n:'5 - جمادى الأولى'},{v:6,n:'6 - جمادى الآخرة'},{v:7,n:'7 - رجب'},{v:8,n:'8 - شعبان'},{v:9,n:'9 - رمضان'},{v:10,n:'10 - شوال'},{v:11,n:'11 - ذو القعدة'},{v:12,n:'12 - ذو الحجة'}].map(m => (<option key={m.v} value={m.v}>{m.n}</option>))}
                       </select>
-                      <select value={sellerBirthDay} onChange={(e) => setSellerBirthDay(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={sellerBirthDay} onChange={(e) => { setSellerBirthDay(e.target.value); handleFieldChange('sellerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.sellerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>اليوم</option>
                         {Array.from({ length: 30 }, (_, i) => i + 1).map(d => (<option key={d} value={d}>{d}</option>))}
                       </select>
                     </div>
+                    {formErrors.sellerBirth && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.sellerBirth}</p>}
                   </div>
                 </>
               ) : (
@@ -342,24 +353,26 @@ export default function NewAppointment() {
                   </div>
                   <div>
                     <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>اسم البائع</label>
-                    <input type="text" value={sellerName} onChange={(e) => { const val = e.target.value; if (val === '' || /^[a-zA-Z\u0600-\u06FF\s]+$/.test(val)) { setSellerName(val); } }} placeholder="أدخل اسم البائع" className="w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold border-gray-200" style={{ color: '#1a5276' }} />
+                    <input type="text" value={sellerName} onChange={(e) => { const val = e.target.value; if (val === '' || /^[a-zA-Z\u0600-\u06FF\s]+$/.test(val)) { setSellerName(val); handleFieldChange('sellerName'); } }} placeholder="أدخل اسم البائع" className={`w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold ${formErrors.sellerName ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276' }} />
+                    {formErrors.sellerName && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.sellerName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>تاريخ ميلاد البائع (هجري)</label>
                     <div className="flex gap-3" dir="ltr">
-                      <select value={sellerBirthYear} onChange={(e) => setSellerBirthYear(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={sellerBirthYear} onChange={(e) => { setSellerBirthYear(e.target.value); handleFieldChange('sellerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.sellerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>السنة</option>
                         {Array.from({ length: 50 }, (_, i) => 1429 - i).map(y => (<option key={y} value={y}>{y}</option>))}
                       </select>
-                      <select value={sellerBirthMonth} onChange={(e) => setSellerBirthMonth(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={sellerBirthMonth} onChange={(e) => { setSellerBirthMonth(e.target.value); handleFieldChange('sellerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.sellerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>الشهر</option>
                         {[{v:1,n:'1 - محرم'},{v:2,n:'2 - صفر'},{v:3,n:'3 - ربيع الأول'},{v:4,n:'4 - ربيع الثاني'},{v:5,n:'5 - جمادى الأولى'},{v:6,n:'6 - جمادى الآخرة'},{v:7,n:'7 - رجب'},{v:8,n:'8 - شعبان'},{v:9,n:'9 - رمضان'},{v:10,n:'10 - شوال'},{v:11,n:'11 - ذو القعدة'},{v:12,n:'12 - ذو الحجة'}].map(m => (<option key={m.v} value={m.v}>{m.n}</option>))}
                       </select>
-                      <select value={sellerBirthDay} onChange={(e) => setSellerBirthDay(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={sellerBirthDay} onChange={(e) => { setSellerBirthDay(e.target.value); handleFieldChange('sellerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.sellerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>اليوم</option>
                         {Array.from({ length: 30 }, (_, i) => i + 1).map(d => (<option key={d} value={d}>{d}</option>))}
                       </select>
                     </div>
+                    {formErrors.sellerBirth && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.sellerBirth}</p>}
                   </div>
 
                   {/* Separator between seller and buyer */}
@@ -373,24 +386,26 @@ export default function NewAppointment() {
                   </div>
                   <div>
                     <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>اسم المشتري</label>
-                    <input type="text" value={buyerName} onChange={(e) => { const val = e.target.value; if (val === '' || /^[a-zA-Z\u0600-\u06FF\s]+$/.test(val)) { setBuyerName(val); } }} placeholder="أدخل اسم المشتري" className="w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold border-gray-200" style={{ color: '#1a5276' }} />
+                    <input type="text" value={buyerName} onChange={(e) => { const val = e.target.value; if (val === '' || /^[a-zA-Z\u0600-\u06FF\s]+$/.test(val)) { setBuyerName(val); handleFieldChange('buyerName'); } }} placeholder="أدخل اسم المشتري" className={`w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold ${formErrors.buyerName ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276' }} />
+                    {formErrors.buyerName && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.buyerName}</p>}
                   </div>
                   <div>
                     <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>تاريخ ميلاد المشتري (هجري)</label>
                     <div className="flex gap-3" dir="ltr">
-                      <select value={buyerBirthYear} onChange={(e) => setBuyerBirthYear(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={buyerBirthYear} onChange={(e) => { setBuyerBirthYear(e.target.value); handleFieldChange('buyerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.buyerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>السنة</option>
                         {Array.from({ length: 50 }, (_, i) => 1429 - i).map(y => (<option key={y} value={y}>{y}</option>))}
                       </select>
-                      <select value={buyerBirthMonth} onChange={(e) => setBuyerBirthMonth(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={buyerBirthMonth} onChange={(e) => { setBuyerBirthMonth(e.target.value); handleFieldChange('buyerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.buyerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>الشهر</option>
                         {[{v:1,n:'1 - محرم'},{v:2,n:'2 - صفر'},{v:3,n:'3 - ربيع الأول'},{v:4,n:'4 - ربيع الثاني'},{v:5,n:'5 - جمادى الأولى'},{v:6,n:'6 - جمادى الآخرة'},{v:7,n:'7 - رجب'},{v:8,n:'8 - شعبان'},{v:9,n:'9 - رمضان'},{v:10,n:'10 - شوال'},{v:11,n:'11 - ذو القعدة'},{v:12,n:'12 - ذو الحجة'}].map(m => (<option key={m.v} value={m.v}>{m.n}</option>))}
                       </select>
-                      <select value={buyerBirthDay} onChange={(e) => setBuyerBirthDay(e.target.value)} className="flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base border-gray-200" style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
+                      <select value={buyerBirthDay} onChange={(e) => { setBuyerBirthDay(e.target.value); handleFieldChange('buyerBirth'); }} className={`flex-1 px-3 py-3 border rounded-lg bg-white text-center focus:outline-none focus:border-[#1a73a7] text-base ${formErrors.buyerBirth ? 'border-red-500' : 'border-gray-200'}`} style={{ color: '#1a5276', backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231a5276\'%3E%3Cpath d=\'M7 10l5 5 5-5z\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 8px center', backgroundSize: '20px', appearance: 'none', paddingLeft: '28px' }}>
                         <option value="" disabled>اليوم</option>
                         {Array.from({ length: 30 }, (_, i) => i + 1).map(d => (<option key={d} value={d}>{d}</option>))}
                       </select>
                     </div>
+                    {formErrors.buyerBirth && <p className="text-red-500 text-xs mt-1 text-right">{formErrors.buyerBirth}</p>}
                   </div>
                 </>
               )}

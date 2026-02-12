@@ -406,7 +406,7 @@ export default function FahsHome() {
                   );
                 })()}
                 {/* Desktop: absolute positioned with hover tooltip (original) */}
-                <div className={`hidden md:flex absolute right-0 items-center gap-2 mt-2 whitespace-nowrap group rounded-lg px-2 py-1 transition-all duration-300 ${agreementHighlight ? 'bg-red-50' : ''}`} dir="rtl">
+                <div className={`hidden md:flex absolute right-0 items-center gap-2 mt-2 whitespace-nowrap group rounded-lg px-2 py-1 transition-all duration-300 ${agreementHighlight ? 'bg-red-200 border border-red-400' : ''}`} dir="rtl">
                   <input type="checkbox" id="agree-desktop" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setAgreementHighlight(false); }} className="w-4 h-4" />
                   <label htmlFor="agree-desktop" className="text-sm cursor-pointer relative" style={{ color: '#1a5276', fontWeight: 400 }}>
                     أوافق على منح حق الاستعلام
@@ -417,7 +417,7 @@ export default function FahsHome() {
                 </div>
                 {/* Mobile: normal flow with tap-to-show */}
                 <div className="md:hidden">
-                  <div className={`flex items-center gap-2 mt-2 rounded-lg px-2 py-1 transition-all duration-300 ${agreementHighlight ? 'bg-red-50' : ''}`} dir="rtl">
+                  <div className={`flex items-center gap-2 mt-2 rounded-lg px-2 py-1 transition-all duration-300 ${agreementHighlight ? 'bg-red-200 border border-red-400' : ''}`} dir="rtl">
                     <input type="checkbox" id="agree-mobile" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setAgreementHighlight(false); }} className="w-4 h-4 flex-shrink-0" />
                     <label htmlFor="agree-mobile" className="text-xs sm:text-sm cursor-pointer" style={{ color: '#1a5276', fontWeight: 400 }}>
                       أوافق على منح حق الاستعلام

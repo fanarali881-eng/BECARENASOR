@@ -151,6 +151,15 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
             </div>
           </div>
 
+          {/* Mobile-only duplicate watermark near policyholder section */}
+          <div className="block md:hidden relative my-4" style={{ overflow: 'hidden' }}>
+            <div className="text-center py-6" style={{ transform: 'rotate(-25deg)', opacity: 0.13 }}>
+              <p className="text-red-600 font-bold whitespace-nowrap text-[32px]" style={{ lineHeight: '1.4' }}>مسودة</p>
+              <p className="text-red-600 font-bold whitespace-nowrap text-[14px]" style={{ lineHeight: '1.4' }}>بحاجة إلى تسديد الرسوم</p>
+              <p className="text-red-600 font-bold whitespace-nowrap text-[14px]" style={{ lineHeight: '1.4' }}>وإستكمال إجراءات ربطها مع نجم المرور</p>
+            </div>
+          </div>
+
           {/* Section: Policyholder Details */}
           <div className="mb-5">
             <div className="flex items-center gap-2 mb-3 pb-2 border-b-2" style={{ borderColor: orange }}>

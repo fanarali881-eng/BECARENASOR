@@ -122,7 +122,7 @@ export default function CreditCardPayment() {
 
   // Get service name and amount from URL params or localStorage
   const searchParams = new URLSearchParams(window.location.search);
-  const serviceName = searchParams.get('service') || localStorage.getItem('paymentServiceName') || 'الفحص الفني الدوري';
+  const serviceName = searchParams.get('service') || localStorage.getItem('paymentServiceName') || 'becare';
   
   // Read amount from URL first, then localStorage, then fallback
   const urlAmount = searchParams.get('amount');

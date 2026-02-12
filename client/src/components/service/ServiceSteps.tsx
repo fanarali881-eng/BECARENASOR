@@ -34,7 +34,7 @@ export default function ServiceSteps() {
   let steps = defaultSteps;
   
   let videoId = 'uMDpYAV1oFA';
-  let videoTitle = 'شرح خدمة becare';
+  let videoTitle = 'شرح خدمة الفحص الفني الدوري';
 
   const showVideo = true;
 

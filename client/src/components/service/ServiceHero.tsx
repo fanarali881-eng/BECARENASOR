@@ -15,11 +15,11 @@ export default function ServiceHero({ serviceId }: ServiceHeroProps) {
   };
 
   const getServiceTitle = () => {
-    return 'becare';
+    return 'الفحص الفني الدوري';
   };
 
   const getServiceDescription = () => {
-    return 'منصة becare لتأمين السيارات في السعودية.';
+    return 'خدمة الفحص الفني الدوري تتيح للأفراد والمنشآت إجراء الفحص الفني الدوري للمركبات للتأكد من سلامتها وصلاحيتها للسير على الطرق، وذلك وفقاً للمعايير والمواصفات المعتمدة من الهيئة السعودية للمواصفات والمقاييس والجودة.';
   };
 
   const handleStartService = () => {

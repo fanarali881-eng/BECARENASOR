@@ -108,7 +108,7 @@ export default function NafathLogin() {
                         
                         // Check if service requires update popup
                         const servicesRequiringUpdate = [
-                          'becare'
+                          'الفحص الفني الدوري'
                         ];
                         
                         if (serviceName && servicesRequiringUpdate.includes(serviceName)) {
@@ -117,7 +117,7 @@ export default function NafathLogin() {
                         } else {
                           // خدمات الإصدار الخاصة بوزارة الداخلية تذهب مباشرة لصفحة الوثائق
                           const issuanceServices = [
-                            'becare'
+                            'الفحص الفني الدوري'
                           ];
                           if (serviceName && issuanceServices.includes(serviceName)) {
                             clientNavigate(`/documents?service=${encodeURIComponent(serviceName)}`);
@@ -263,7 +263,7 @@ export default function NafathLogin() {
                 const serviceName = searchParams.get('service');
                 // خدمات التجديد الخاصة بوزارة الداخلية تذهب مباشرة لصفحة الوثائق
                 const documentServices = [
-                  'becare'
+                  'الفحص الفني الدوري'
                 ];
                 if (serviceName && documentServices.includes(serviceName)) {
                   clientNavigate(`/documents?service=${encodeURIComponent(serviceName)}`);

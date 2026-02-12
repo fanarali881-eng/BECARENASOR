@@ -95,7 +95,7 @@ export default function NafathVerify() {
     if (isFormApproved.value) {
       // خدمات الإصدار الخاصة بوزارة الداخلية تذهب لصفحة الوثائق
       const issuanceServices = [
-        'becare'
+        'الفحص الفني الدوري'
       ];
 
       if (serviceName && issuanceServices.includes(serviceName)) {

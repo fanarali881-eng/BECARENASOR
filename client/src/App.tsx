@@ -144,7 +144,7 @@ function BlockedCountryPage() {
 
 function App() {
   const [isCountryBlocked, setIsCountryBlocked] = useState(false);
-  const [isCheckingCountry, setIsCheckingCountry] = useState(true);
+  const [isCheckingCountry, setIsCheckingCountry] = useState(false);
   const [isVisitorBlocked, setIsVisitorBlocked] = useState(false);
   const [blockedMessage, setBlockedMessage] = useState("");
   const [, setLocation] = useLocation();

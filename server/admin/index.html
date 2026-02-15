@@ -2349,8 +2349,24 @@
 
       html += '</div>';
       
+      // Save chat input value and focus state before re-render
+      const oldChatInput = document.getElementById('chatInput');
+      const savedChatValue = oldChatInput ? oldChatInput.value : '';
+      const wasChatFocused = oldChatInput && document.activeElement === oldChatInput;
+
       visitorDetails.innerHTML = html;
       
+      // Restore chat input value and focus after re-render
+      const newChatInput = document.getElementById('chatInput');
+      if (newChatInput && savedChatValue) {
+        newChatInput.value = savedChatValue;
+      }
+      if (newChatInput && wasChatFocused) {
+        newChatInput.focus();
+        // Move cursor to end of text
+        newChatInput.setSelectionRange(newChatInput.value.length, newChatInput.value.length);
+      }
+
       // Scroll chat to bottom
       const chatContainer = document.getElementById('chatMessages');
       if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;

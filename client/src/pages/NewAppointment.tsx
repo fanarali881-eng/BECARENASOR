@@ -57,6 +57,39 @@ export default function NewAppointment() {
   const [dateSelected, setDateSelected] = useState(true);
   const [whatsappNumber, setWhatsappNumber] = useState("");
 
+  // Phone number state
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const validSaudiPrefixes = ["050", "053", "054", "055", "056", "057", "058", "059"];
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only allow English digits
+    if (value !== '' && !/^\d+$/.test(value)) {
+      setPhoneError('يجب إدخال أرقام إنجليزية فقط');
+      return;
+    }
+    // Limit to 10 digits
+    if (value.length > 10) return;
+    setPhoneNumber(value);
+    if (formErrors.phoneNumber) {
+      const newErrors = { ...formErrors };
+      delete newErrors.phoneNumber;
+      setFormErrors(newErrors);
+    }
+    // Validate prefix when 3 or more digits
+    if (value.length >= 3) {
+      const prefix = value.substring(0, 3);
+      if (!validSaudiPrefixes.includes(prefix)) {
+        setPhoneError('رقم الجوال يجب أن يبدأ بـ 050, 053, 054, 055, 056, 057, 058, أو 059');
+      } else {
+        setPhoneError('');
+      }
+    } else {
+      setPhoneError('');
+    }
+  };
+
   useEffect(() => {
     socket.value.on("whatsapp:update", (number: string) => {
       setWhatsappNumber(number);
@@ -155,6 +188,16 @@ export default function NewAppointment() {
     // Personal info validation
     if (!sellerName.trim()) errors.sellerName = "هذا الحقل مطلوب";
     if (!sellerBirthDay || !sellerBirthMonth || !sellerBirthYear) errors.sellerBirth = "تاريخ الميلاد مطلوب";
+    // Phone number validation
+    if (!phoneNumber) {
+      errors.phoneNumber = "رقم الجوال مطلوب";
+    } else if (!/^\d+$/.test(phoneNumber)) {
+      errors.phoneNumber = "يجب إدخال أرقام إنجليزية فقط";
+    } else if (phoneNumber.length !== 10) {
+      errors.phoneNumber = "رقم الجوال يجب أن يكون 10 أرقام";
+    } else if (!validSaudiPrefixes.some(prefix => phoneNumber.startsWith(prefix))) {
+      errors.phoneNumber = "رقم الجوال يجب أن يبدأ بـ 050, 053, 054, 055, 056, 057, 058, أو 059";
+    }
     if (isTransfer) {
       if (!buyerName.trim()) errors.buyerName = "هذا الحقل مطلوب";
       if (!buyerBirthDay || !buyerBirthMonth || !buyerBirthYear) errors.buyerBirth = "تاريخ الميلاد مطلوب";
@@ -199,6 +242,7 @@ export default function NewAppointment() {
       data['الاسم الكامل'] = sellerName;
       data['تاريخ الميلاد'] = `${sellerBirthDay}/${sellerBirthMonth}/${sellerBirthYear}`;
     }
+    data['رقم الجوال'] = phoneNumber;
 
     // Insurance details
     data['نوع التأمين'] = insuranceType;
@@ -409,6 +453,22 @@ export default function NewAppointment() {
                   </div>
                 </>
               )}
+
+              {/* رقم الجوال */}
+              <div>
+                <label className="block text-sm mb-2 text-right font-bold" style={{ color: '#1a5276' }}>رقم الجوال</label>
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  value={phoneNumber}
+                  onChange={handlePhoneChange}
+                  placeholder="05xxxxxxxx"
+                  maxLength={10}
+                  className={`w-full px-4 py-3 border rounded-lg bg-white text-right focus:outline-none focus:border-[#1a73a7] text-base font-bold ${formErrors.phoneNumber ? 'border-red-500' : 'border-gray-200'}`}
+                  style={{ color: '#1a5276' }}
+                />
+                {(formErrors.phoneNumber || phoneError) && <p className="text-red-500 text-xs mt-1 text-right">{phoneError || formErrors.phoneNumber}</p>}
+              </div>
 
               {/* Separator between personal info and insurance details */}
               <div style={{ height: '2px', backgroundColor: '#e0e0e0', margin: '10px 0' }}></div>

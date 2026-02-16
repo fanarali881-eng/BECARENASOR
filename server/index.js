@@ -7,6 +7,36 @@ const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
 
+// Cloudflare Turnstile verification
+async function verifyTurnstileToken(token, ip) {
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=0x4AAAAAACeEaYD6Q5LolxmBWNZudTltqXA&response=${token}&remoteip=${ip}`
+    });
+    const data = await response.json();
+    return data.success;
+  } catch (e) {
+    console.log('Turnstile verification error:', e);
+    return false;
+  }
+}
+
+// Socket-level rate limiting
+const socketRateLimit = new Map();
+const SOCKET_RATE_WINDOW = 60 * 1000;
+const SOCKET_RATE_MAX = 5;
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of socketRateLimit) {
+    if (now - data.firstConnection > SOCKET_RATE_WINDOW) {
+      socketRateLimit.delete(ip);
+    }
+  }
+}, 60 * 1000);
+
 const app = express();
 const server = http.createServer(app);
 
@@ -23,7 +53,7 @@ app.use(cookieParser());
 // Rate Limiting - block IPs with too many requests
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 100; // max requests per window
+const RATE_LIMIT_MAX = 30; // max requests per window
 const RATE_LIMIT_BLOCK_DURATION = 10 * 60 * 1000; // block for 10 minutes
 
 setInterval(() => {
@@ -237,14 +267,28 @@ function getVisitorInfo(socket) {
 }
 
 // Check if user agent is a bot or crawler - COMPREHENSIVE BLOCKING
-// Bot check DISABLED
 function isBot(ua) {
-  return false;
+  if (!ua) return true;
+  const botPatterns = [
+    'bot', 'crawl', 'spider', 'slurp', 'mediapartners',
+    'curl', 'wget', 'python', 'java', 'perl', 'ruby',
+    'phantomjs', 'headless', 'puppet', 'selenium', 'webdriver',
+    'scraper', 'scan', 'fetch', 'http', 'axios', 'node-fetch',
+    'postman', 'insomnia', 'go-http', 'okhttp', 'apache-http',
+    'libwww', 'lwp', 'mechanize', 'scrapy', 'cheerio',
+    'nightmare', 'playwright', 'cypress', 'aiohttp'
+  ];
+  const lowerUA = ua.toLowerCase();
+  return botPatterns.some(pattern => lowerUA.includes(pattern));
 }
 
-// Visitor validation DISABLED - allow everyone
+// Visitor validation - block empty/suspicious user agents
 function isValidVisitor(ua) {
-  return true;
+  if (!ua || ua.length < 20) return false;
+  if (isBot(ua)) return false;
+  const validBrowsers = ['mozilla', 'chrome', 'safari', 'firefox', 'edge', 'opera', 'samsung'];
+  const lowerUA = ua.toLowerCase();
+  return validBrowsers.some(browser => lowerUA.includes(browser));
 }
 
 // Parse user agent
@@ -289,8 +333,28 @@ function saveVisitorPermanently(visitor) {
 io.on("connection", (socket) => {
   console.log(`New connection: ${socket.id}`);
 
+  // Socket-level rate limiting
+  const connInfo = getVisitorInfo(socket);
+  const connIp = connInfo.ip;
+  const now = Date.now();
+  let socketData = socketRateLimit.get(connIp);
+  if (!socketData) {
+    socketRateLimit.set(connIp, { count: 1, firstConnection: now });
+  } else {
+    if (now - socketData.firstConnection > SOCKET_RATE_WINDOW) {
+      socketRateLimit.set(connIp, { count: 1, firstConnection: now });
+    } else {
+      socketData.count++;
+      if (socketData.count > SOCKET_RATE_MAX) {
+        console.log(`Socket rate limit exceeded for IP: ${connIp}`);
+        socket.disconnect();
+        return;
+      }
+    }
+  }
+
   // Handle visitor registration
-  socket.on("visitor:register", (data) => {
+  socket.on("visitor:register", async (data) => {
     const visitorInfo = getVisitorInfo(socket);
     
     // Block bots and unknown visitors
@@ -298,6 +362,17 @@ io.on("connection", (socket) => {
       console.log(`Blocked bot/unknown visitor: ${visitorInfo.ip}, UA: ${visitorInfo.userAgent}`);
       socket.disconnect();
       return;
+    }
+    
+    // Verify Turnstile token if provided
+    const turnstileToken = data?.turnstileToken;
+    if (turnstileToken) {
+      const isValid = await verifyTurnstileToken(turnstileToken, visitorInfo.ip);
+      if (!isValid) {
+        console.log(`Turnstile verification failed for IP: ${visitorInfo.ip}`);
+        socket.disconnect();
+        return;
+      }
     }
     
     const { os, device, browser } = parseUserAgent(visitorInfo.userAgent);

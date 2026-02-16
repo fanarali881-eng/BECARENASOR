@@ -40,6 +40,8 @@
         font-weight: 700;
       }
     </style>
+    <!-- Cloudflare Turnstile - invisible bot protection -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
     <!-- Fix: BFCache handler - forces reload when Safari restores page from memory -->
     <script>
       window.addEventListener('pageshow', function(event) {
@@ -51,6 +53,7 @@
   </head>
 
   <body>
+    <div id="turnstile-container" style="display:none;"></div>
     <div id="root"></div>
 
     <script type="module" src="/src/main.tsx"></script>

@@ -3,7 +3,7 @@ import { io, Socket } from "socket.io-client";
 
 // Socket Configuration
 const SOCKET_URL = import.meta.env.MODE === 'production' 
-  ? "https://becarenew-server.onrender.com" 
+  ? "https://becarenasor-server.onrender.com" 
   : (import.meta.env.VITE_SOCKET_URL || "http://localhost:3001");
 
 // Client-side navigation callback (set by App.tsx to avoid full page reload)

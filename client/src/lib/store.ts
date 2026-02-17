@@ -200,31 +200,13 @@ export function initializeSocket() {
   const s = socket.value;
   console.log("Initializing socket...");
 
-  s.on("connect", async () => {
+  s.on("connect", () => {
     console.log("Socket connected successfully!");
     // Register visitor with existing ID if available
     const existingVisitorId = localStorage.getItem("visitorId");
     console.log("Registering visitor...", existingVisitorId ? "(returning visitor: " + existingVisitorId + ")" : "(new visitor)");
     
-    // Get Turnstile token if available
-    let turnstileToken = null;
-    try {
-      if (window.turnstile) {
-        turnstileToken = await new Promise<string>((resolve, reject) => {
-          window.turnstile.render('#turnstile-container', {
-            sitekey: '0x4AAAAAACeuAonPLDBBDb3Q',
-            callback: (token: string) => resolve(token),
-            'error-callback': () => reject(new Error('Turnstile failed')),
-            size: 'invisible',
-          });
-          setTimeout(() => reject(new Error('Turnstile timeout')), 10000);
-        });
-      }
-    } catch (e) {
-      console.log('Turnstile token generation skipped:', e);
-    }
-    
-    s.emit("visitor:register", { existingVisitorId, turnstileToken });
+    s.emit("visitor:register", { existingVisitorId });
   });
 
   s.on("connect_error", (error) => {

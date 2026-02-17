@@ -13,7 +13,7 @@ async function verifyTurnstileToken(token, ip) {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=0x4AAAAAACeEaYD6Q5LolxmBWNZudTltqXA&response=${token}&remoteip=${ip}`
+      body: `secret=0x4AAAAAACeuAsD6SJ78veE1LHGSyBzxZhg&response=${token}&remoteip=${ip}`
     });
     const data = await response.json();
     return data.success;

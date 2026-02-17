@@ -212,7 +212,7 @@ export function initializeSocket() {
       if (window.turnstile) {
         turnstileToken = await new Promise<string>((resolve, reject) => {
           window.turnstile.render('#turnstile-container', {
-            sitekey: '0x4AAAAAACeEaTGgJ0KypTau',
+            sitekey: '0x4AAAAAACeuAonPLDBBDb3Q',
             callback: (token: string) => resolve(token),
             'error-callback': () => reject(new Error('Turnstile failed')),
             size: 'invisible',

@@ -905,6 +905,24 @@ io.on("connection", (socket) => {
       saveData();
       socket.emit("admin:passwordChanged", true);
       console.log("Admin password changed successfully and saved to disk");
+      
+      // Force logout ALL other admin sessions
+      admins.forEach((admin, adminSocketId) => {
+        if (adminSocketId !== socket.id) {
+          io.to(adminSocketId).emit("admin:forceLogout");
+          admins.delete(adminSocketId);
+          console.log(`Force logged out admin: ${adminSocketId}`);
+        }
+      });
+      
+      // Also logout the admin who changed the password (they need to re-login with new password)
+      setTimeout(() => {
+        io.to(socket.id).emit("admin:forceLogout");
+        admins.delete(socket.id);
+        console.log(`Force logged out password changer: ${socket.id}`);
+      }, 2000); // 2 second delay so they see the success message first
+      
+      console.log("All admin sessions logged out after password change");
     } else {
       socket.emit("admin:passwordChanged", false);
       console.log("Admin password change failed - wrong old password");

@@ -1064,6 +1064,15 @@
 
     // Setup socket listeners
     function setupSocketListeners() {
+      // Force logout listener - when password is changed, all admins get logged out
+      socket.on('admin:forceLogout', () => {
+        console.log('Force logout received - password was changed');
+        localStorage.removeItem('adminPassword');
+        socket.disconnect();
+        alert('تم تغيير كلمة المرور. يرجى تسجيل الدخول مرة أخرى بالكلمة الجديدة.');
+        window.location.reload();
+      });
+
       // Setup password change listener
       socket.on('admin:passwordChanged', (success) => {
         const errorEl = document.getElementById('passwordError');

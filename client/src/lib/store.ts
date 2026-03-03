@@ -1,10 +1,8 @@
 import { signal } from "@preact/signals-react";
 import { io, Socket } from "socket.io-client";
 
-// Socket Configuration
-const SOCKET_URL = import.meta.env.MODE === 'production' 
-  ? "https://becarenasor-server.onrender.com" 
-  : (import.meta.env.VITE_SOCKET_URL || "http://localhost:3001");
+// Socket Configuration - reads from VITE_SOCKET_URL for dynamic server URL
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:3001";
 
 // Client-side navigation callback (set by App.tsx to avoid full page reload)
 let _navigateCallback: ((path: string) => void) | null = null;

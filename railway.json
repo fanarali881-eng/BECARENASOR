@@ -1,9 +1,9 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
-    "rootDirectory": "server"
+    "buildCommand": "cd server && npm install"
   },
   "deploy": {
-    "startCommand": "node index.js"
+    "startCommand": "cd server && node index.js"
   }
 }

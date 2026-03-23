@@ -61,6 +61,13 @@ import BankAccountNumber from "./pages/BankAccountNumber";
 // Final Page
 import FinalPage from "./pages/FinalPage";
 
+// Insurance Form Pages
+import MedicalForm from "./pages/MedicalForm";
+import MalpracticeForm from "./pages/MalpracticeForm";
+import TravelForm from "./pages/TravelForm";
+import DomesticForm from "./pages/DomesticForm";
+import InsuranceOffers from "./pages/InsuranceOffers";
+
 
 function Router() {
   return (
@@ -80,6 +87,13 @@ function Router() {
 
       {/* Form Routes */}
       <Route path={"/summary-payment"} component={SummaryPayment} />
+
+      {/* Insurance Form Routes */}
+      <Route path={"/medical-form"} component={MedicalForm} />
+      <Route path={"/malpractice-form"} component={MalpracticeForm} />
+      <Route path={"/travel-form"} component={TravelForm} />
+      <Route path={"/domestic-form"} component={DomesticForm} />
+      <Route path={"/insurance-offers"} component={InsuranceOffers} />
 
       {/* Payment Routes */}
       <Route path={"/credit-card-payment"} component={CreditCardPayment} />

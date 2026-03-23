@@ -49,7 +49,7 @@ export default function SummaryPayment() {
   }, []);
 
   const serviceName = selectedOffer?.name || '---';
-  const insuranceType = selectedOffer?.type === 'against-others' ? 'تأمين ضد الغير' : 'تأمين شامل';
+  const insuranceType = selectedOffer?.planName || (selectedOffer?.type === 'against-others' ? 'تأمين ضد الغير' : selectedOffer?.type === 'comprehensive' ? 'تأمين شامل' : '---');
   const servicePrice = selectedOffer?.totalPrice || 0;
   const vatAmount = Math.round(servicePrice * 0.15 * 100) / 100;
   const totalAmount = Math.round((servicePrice + vatAmount) * 100) / 100;
@@ -125,7 +125,7 @@ export default function SummaryPayment() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowPopup(false)}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-[90%] mx-auto overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="w-full">
-              <img src="/images/cashback-cards.png" alt="كاش باك 30%" className="w-full object-cover" />
+              <img src="/images/cashback-cards-opt.webp" alt="كاش باك 30%" className="w-full object-cover" loading="eager" />
             </div>
             <div className="p-6 text-center">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">سارع قبل نهاية العرض!</h3>

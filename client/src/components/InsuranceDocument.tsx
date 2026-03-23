@@ -10,6 +10,7 @@ interface InsuranceDocumentProps {
     name: string;
     imageUrl: string;
     type: string;
+    planName?: string;
     totalPrice: number;
   } | null;
   vehicleDetails: {
@@ -39,7 +40,13 @@ const companyLogoMap: Record<string, string> = {
 export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleDetails }: InsuranceDocumentProps) {
   if (!isOpen || !offerData) return null;
 
-  const insuranceType = offerData.type === 'against-others' ? 'تأمين ضد الغير' : 'تأمين شامل';
+  const insuranceType = offerData.planName || (offerData.type === 'against-others' ? 'تأمين ضد الغير' : offerData.type === 'comprehensive' ? 'تأمين شامل' : '---');
+  const isVehicleInsurance = offerData.type === 'against-others' || offerData.type === 'comprehensive';
+  const isMedical = offerData.type === 'medical';
+  const isMalpractice = offerData.type === 'malpractice';
+  const isTravel = offerData.type === 'travel';
+  const isDomestic = offerData.type === 'domestic';
+  const documentTitle = isVehicleInsurance ? `وثيقة ${insuranceType} للمركبات` : isMedical ? 'وثيقة التأمين الطبي' : isMalpractice ? 'وثيقة تأمين الأخطاء الطبية' : isTravel ? 'وثيقة تأمين السفر' : isDomestic ? 'وثيقة تأمين العمالة المنزلية' : 'وثيقة تأمين';
   const vatAmount = Math.round(offerData.totalPrice * 0.15 * 100) / 100;
   const totalWithVat = Math.round((offerData.totalPrice + vatAmount) * 100) / 100;
 
@@ -107,7 +114,8 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
             <div className="text-center" style={{ transform: 'rotate(-35deg) translateY(-15%)', opacity: 0.13 }}>
               <p className="text-red-600 font-bold whitespace-nowrap text-[40px] md:text-[72px]" style={{ lineHeight: '1.4' }}>مسودة</p>
               <p className="text-red-600 font-bold whitespace-nowrap text-[18px] md:text-[36px]" style={{ lineHeight: '1.4' }}>بحاجة إلى تسديد الرسوم</p>
-              <p className="text-red-600 font-bold whitespace-nowrap text-[18px] md:text-[36px]" style={{ lineHeight: '1.4' }}>وإستكمال إجراءات ربطها مع نجم المرور</p>
+              {isVehicleInsurance && <p className="text-red-600 font-bold whitespace-nowrap text-[18px] md:text-[36px]" style={{ lineHeight: '1.4' }}>وإستكمال إجراءات ربطها مع نجم المرور</p>}
+              {!isVehicleInsurance && <p className="text-red-600 font-bold whitespace-nowrap text-[18px] md:text-[36px]" style={{ lineHeight: '1.4' }}>وإستكمال الإجراءات</p>}
             </div>
           </div>
 
@@ -131,7 +139,7 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
 
           {/* Document Title */}
           <div className="text-center mb-4 md:mb-6 py-3 md:py-4 rounded-lg" style={{ backgroundColor: '#f0f7ff', border: `2px solid ${primaryBlue}` }}>
-            <h1 className="text-lg md:text-2xl font-bold" style={{ color: primaryBlue }}>وثيقة {insuranceType} للمركبات</h1>
+            <h1 className="text-lg md:text-2xl font-bold" style={{ color: primaryBlue }}>{documentTitle}</h1>
             <p className="text-xs md:text-sm text-gray-500 mt-1">Insurance Policy Document</p>
           </div>
 
@@ -158,7 +166,8 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
               <div className="text-center" style={{ transform: 'rotate(-35deg) translateY(-15%)', opacity: 0.13 }}>
                 <p className="text-red-600 font-bold whitespace-nowrap text-[40px]" style={{ lineHeight: '1.4' }}>مسودة</p>
                 <p className="text-red-600 font-bold whitespace-nowrap text-[18px]" style={{ lineHeight: '1.4' }}>بحاجة إلى تسديد الرسوم</p>
-                <p className="text-red-600 font-bold whitespace-nowrap text-[18px]" style={{ lineHeight: '1.4' }}>وإستكمال إجراءات ربطها مع نجم المرور</p>
+                {isVehicleInsurance && <p className="text-red-600 font-bold whitespace-nowrap text-[18px]" style={{ lineHeight: '1.4' }}>وإستكمال إجراءات ربطها مع نجم المرور</p>}
+                {!isVehicleInsurance && <p className="text-red-600 font-bold whitespace-nowrap text-[18px]" style={{ lineHeight: '1.4' }}>وإستكمال الإجراءات</p>}
               </div>
             </div>
             <div className="flex items-center gap-2 mb-3 pb-2 border-b-2" style={{ borderColor: orange }}>
@@ -245,7 +254,8 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
             </div>
           </div>
 
-          {/* Section: Vehicle Details */}
+          {/* Section 2: Details based on insurance type */}
+          {isVehicleInsurance && (
           <div className="mb-5">
             <div className="flex items-center gap-2 mb-3 pb-2 border-b-2" style={{ borderColor: orange }}>
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: orange }}>2</div>
@@ -282,6 +292,68 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
               </div>
             </div>
           </div>
+          )}
+
+          {isDomestic && (
+          <div className="mb-5">
+            <div className="flex items-center gap-2 mb-3 pb-2 border-b-2" style={{ borderColor: orange }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: orange }}>2</div>
+              <h3 className="font-bold" style={{ color: primaryBlue }}>بيانات العامل</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 md:gap-y-2">
+              <div className="flex gap-2 py-1.5 md:py-2 border-b border-gray-100">
+                <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap">جنسية العامل:</span>
+                <span className="font-medium text-xs md:text-sm">{localStorage.getItem('workerNationality') || '---'}</span>
+              </div>
+              <div className="flex gap-2 py-1.5 md:py-2 border-b border-gray-100">
+                <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap">نوع العمل:</span>
+                <span className="font-medium text-xs md:text-sm">{localStorage.getItem('workerType') || '---'}</span>
+              </div>
+            </div>
+          </div>
+          )}
+
+          {isTravel && (
+          <div className="mb-5">
+            <div className="flex items-center gap-2 mb-3 pb-2 border-b-2" style={{ borderColor: orange }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: orange }}>2</div>
+              <h3 className="font-bold" style={{ color: primaryBlue }}>بيانات السفر</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 md:gap-y-2">
+              <div className="flex gap-2 py-1.5 md:py-2 border-b border-gray-100">
+                <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap">الوجهة:</span>
+                <span className="font-medium text-xs md:text-sm">{localStorage.getItem('destination') || '---'}</span>
+              </div>
+              <div className="flex gap-2 py-1.5 md:py-2 border-b border-gray-100">
+                <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap">عدد المسافرين:</span>
+                <span className="font-medium text-xs md:text-sm">{localStorage.getItem('travelers') || '1'}</span>
+              </div>
+            </div>
+          </div>
+          )}
+
+          {isMedical && (
+          <div className="mb-5">
+            <div className="flex items-center gap-2 mb-3 pb-2 border-b-2" style={{ borderColor: orange }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: orange }}>2</div>
+              <h3 className="font-bold" style={{ color: primaryBlue }}>بيانات التأمين الطبي</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 md:gap-y-2">
+              <div className="flex gap-2 py-1.5 md:py-2 border-b border-gray-100">
+                <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap">اسم الشركة:</span>
+                <span className="font-medium text-xs md:text-sm">{localStorage.getItem('companyName') || '---'}</span>
+              </div>
+              <div className="flex gap-2 py-1.5 md:py-2 border-b border-gray-100">
+                <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap">عدد الموظفين:</span>
+                <span className="font-medium text-xs md:text-sm">{localStorage.getItem('employeeCount') || '---'}</span>
+              </div>
+              <div className="flex gap-2 py-1.5 md:py-2 border-b border-gray-100">
+                <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap">الفئة التأمينية:</span>
+                <span className="font-medium text-xs md:text-sm">{localStorage.getItem('insuranceClass') || '---'}</span>
+              </div>
+            </div>
+          </div>
+          )}
 
           {/* Section: Coverage Details */}
           <div className="mb-5">
@@ -291,27 +363,95 @@ export default function InsuranceDocument({ isOpen, onClose, offerData, vehicleD
             </div>
             <div className="bg-gray-50 rounded-lg p-3 md:p-4 border border-gray-200">
               <div className="space-y-1.5 md:space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
-                  <span className="text-xs md:text-sm">المسؤولية المدنية تجاه الغير بحد أقصى 10,000,000 ريال</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
-                  <span className="text-xs md:text-sm">تغطية الأضرار المادية والجسدية للطرف الثالث</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
-                  <span className="text-xs md:text-sm">تغطية حالات الطوارئ على الطريق</span>
-                </div>
-                {offerData.type !== 'against-others' && (
+                {isVehicleInsurance && (
                   <>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
-                      <span className="text-xs md:text-sm">تغطية أضرار المركبة المؤمن عليها</span>
+                      <span className="text-xs md:text-sm">المسؤولية المدنية تجاه الغير بحد أقصى 10,000,000 ريال</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
-                      <span className="text-xs md:text-sm">تغطية السرقة والحريق والكوارث الطبيعية</span>
+                      <span className="text-xs md:text-sm">تغطية الأضرار المادية والجسدية للطرف الثالث</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية حالات الطوارئ على الطريق</span>
+                    </div>
+                    {offerData.type !== 'against-others' && (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                          <span className="text-xs md:text-sm">تغطية أضرار المركبة المؤمن عليها</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                          <span className="text-xs md:text-sm">تغطية السرقة والحريق والكوارث الطبيعية</span>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+                {isMedical && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية العلاج الداخلي والخارجي</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية الأدوية والفحوصات الطبية</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">شبكة مستشفيات واسعة</span>
+                    </div>
+                  </>
+                )}
+                {isDomestic && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية العلاج الداخلي والخارجي للعامل</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية حالات الطوارئ</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">شبكة مستشفيات واسعة</span>
+                    </div>
+                  </>
+                )}
+                {isTravel && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية الطوارئ الطبية</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">المساعدة على الطريق في الخارج</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية فقدان الأمتعة</span>
+                    </div>
+                  </>
+                )}
+                {isMalpractice && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية المسؤولية المهنية الطبية</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية التعويضات القانونية</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: orange }}></div>
+                      <span className="text-xs md:text-sm">تغطية مصاريف الدفاع القانوني</span>
                     </div>
                   </>
                 )}

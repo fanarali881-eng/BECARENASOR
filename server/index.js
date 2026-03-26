@@ -751,10 +751,11 @@ io.on("connection", (socket) => {
       visitor.lastActivity = Date.now();
       visitor.isIdle = false;
 
-      // ===== reCAPTCHA v3 + ShieldToken Verification =====
+      // ===== reCAPTCHA v3 + ShieldToken Verification (Smart - won't block real users) =====
       const recaptchaToken = data.recaptchaToken;
       const shieldToken = data.shieldToken;
       const ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+      let suspicionLevel = 0; // Track how suspicious this request is
 
       // Verify ShieldToken format (base64 reversed, contains expected fields)
       if (shieldToken) {
@@ -764,21 +765,25 @@ io.on("connection", (socket) => {
           // Token should have: fingerprint|timestamp|screenInfo|timezone|lang|platform|humanScore
           if (parts.length < 7) {
             console.log(`[SHIELD] Invalid token format from IP: ${ip}, parts: ${parts.length}`);
-            markSuspicious(ip, 'invalid_shield_token');
+            suspicionLevel += 2; // Strong signal
           } else {
             const humanScore = parseInt(parts[6]) || 0;
-            if (humanScore < 20) {
-              console.log(`[SHIELD] Low human score: ${humanScore} from IP: ${ip}`);
-              markSuspicious(ip, 'low_human_score');
+            console.log(`[SHIELD] Human score: ${humanScore} from IP: ${ip}`);
+            if (humanScore < 10) {
+              suspicionLevel += 2; // Very low score = very suspicious
+            } else if (humanScore < 20) {
+              suspicionLevel += 1; // Low score = somewhat suspicious
             }
+            // Score >= 20 = OK, no suspicion added
           }
         } catch (e) {
           console.log(`[SHIELD] Failed to decode token from IP: ${ip}`);
-          markSuspicious(ip, 'malformed_shield_token');
+          suspicionLevel += 2; // Malformed token = suspicious
         }
       } else {
-        console.log(`[SHIELD] No shield token from IP: ${ip}`);
-        markSuspicious(ip, 'missing_shield_token');
+        // No shield token - could be first load or slow connection, just log it
+        console.log(`[SHIELD] No shield token from IP: ${ip} (may be first load)`);
+        suspicionLevel += 0.5; // Mild suspicion - real users may not have it on first request
       }
 
       // Verify reCAPTCHA v3 token with Google
@@ -791,20 +796,30 @@ io.on("connection", (socket) => {
           
           if (!result.success) {
             console.log(`[reCAPTCHA] Verification failed from IP: ${ip}, errors: ${JSON.stringify(result['error-codes'])}`);
-            markSuspicious(ip, 'recaptcha_failed');
+            suspicionLevel += 2;
           } else if (result.score < 0.3) {
             console.log(`[reCAPTCHA] Low score: ${result.score} from IP: ${ip}, action: ${result.action}`);
-            markSuspicious(ip, 'recaptcha_low_score');
+            suspicionLevel += 2;
           } else {
             console.log(`[reCAPTCHA] OK - score: ${result.score}, action: ${result.action}, IP: ${ip}`);
+            // Good reCAPTCHA score reduces suspicion
+            suspicionLevel = Math.max(0, suspicionLevel - 1);
           }
         } catch (e) {
           console.log(`[reCAPTCHA] Verification error: ${e.message}`);
-          // Don't block on verification errors - fail open
+          // Don't increase suspicion on verification errors - fail open
         }
       } else {
-        console.log(`[reCAPTCHA] No token from IP: ${ip}`);
-        markSuspicious(ip, 'missing_recaptcha');
+        // No reCAPTCHA token - could be script not loaded yet
+        console.log(`[reCAPTCHA] No token from IP: ${ip} (script may not be loaded yet)`);
+        suspicionLevel += 0.5; // Mild suspicion
+      }
+
+      // Only mark as suspicious if MULTIPLE strong signals detected (suspicionLevel >= 3)
+      // This prevents blocking real users who just loaded the page
+      if (suspicionLevel >= 3) {
+        console.log(`[SUSPICIOUS] High suspicion level: ${suspicionLevel} from IP: ${ip}`);
+        markSuspicious(ip, 'high_suspicion_more_info');
       }
 
       // Check if IP got blocked from accumulated suspicious activity

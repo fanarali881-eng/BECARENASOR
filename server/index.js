@@ -19,26 +19,116 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, etc.)
+    // Allow requests with no origin (same-origin, server-to-server)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(null, false);
+      console.log(`[CORS BLOCKED] Origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '1mb' })); // Limit body size
 app.use(cookieParser());
+
+// ===== BOT DETECTION FUNCTIONS (defined early for middleware use) =====
+
+// Check if user agent is a bot or crawler - COMPREHENSIVE BLOCKING
+function isBot(ua) {
+  if (!ua || ua.length < 10) return true; // Empty or very short UA = suspicious
+  const lowerUA = ua.toLowerCase();
+  const botPatterns = [
+    // Search engine bots
+    'googlebot', 'bingbot', 'yandexbot', 'baiduspider', 'duckduckbot',
+    'slurp', 'sogou', 'exabot', 'facebot', 'ia_archiver',
+    // Crawlers & scrapers
+    'crawler', 'spider', 'scraper', 'bot/', 'bot;', 'bot ',
+    'crawl', 'fetch', 'archive', 'scan',
+    // Automation tools
+    'phantomjs', 'headless', 'selenium', 'puppeteer', 'playwright',
+    'webdriver', 'chromedriver', 'geckodriver', 'nightwatch',
+    'cypress', 'casperjs', 'slimerjs', 'zombie',
+    // HTTP libraries
+    'python-requests', 'python-urllib', 'python/', 'aiohttp',
+    'httpx', 'scrapy', 'beautifulsoup',
+    'curl/', 'wget/', 'libwww', 'lwp-',
+    'java/', 'apache-httpclient', 'okhttp',
+    'node-fetch', 'axios/', 'got/',
+    'go-http-client', 'ruby', 'perl',
+    'postman', 'insomnia', 'httpie',
+    // Known bad bots
+    'semrush', 'ahrefs', 'mj12bot', 'dotbot', 'rogerbot',
+    'screaming frog', 'seokicks', 'sistrix', 'linkdex',
+    'blexbot', 'megaindex', 'majestic', 'serpstat',
+    'petalbot', 'bytespider', 'gptbot', 'ccbot', 'chatgpt',
+    'claudebot', 'anthropic', 'cohere-ai',
+    // Misc
+    'feedfetcher', 'mediapartners', 'adsbot', 'apis-google',
+    'lighthouse', 'pagespeed', 'gtmetrix', 'pingdom',
+    'uptimerobot', 'statuscake', 'monitor', 'checker',
+    'validator', 'w3c', 'whatsapp', 'telegram', 'discord',
+    'slack', 'facebook', 'twitter', 'linkedin',
+    'preview', 'embed', 'proxy', 'anonymo',
+  ];
+  return botPatterns.some(pattern => lowerUA.includes(pattern));
+}
+
+// Visitor validation - check for real browser signatures
+function isValidVisitor(ua) {
+  if (!ua || ua.length < 20) return false;
+  const lowerUA = ua.toLowerCase();
+  // Must contain at least one real browser identifier
+  const browserSignatures = ['mozilla/', 'chrome/', 'safari/', 'firefox/', 'edge/', 'opera/', 'opr/'];
+  const hasBrowser = browserSignatures.some(sig => lowerUA.includes(sig));
+  if (!hasBrowser) return false;
+  // Must not be a known bot
+  if (isBot(ua)) return false;
+  return true;
+}
+
+// Security headers (like Helmet)
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.removeHeader('X-Powered-By');
+  next();
+});
+
+// Bot detection middleware for HTTP requests
+app.use((req, res, next) => {
+  const ua = req.headers['user-agent'] || '';
+  if (isBot(ua)) {
+    console.log(`[BOT BLOCKED] HTTP: ${req.ip}, UA: ${ua.substring(0, 80)}`);
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  next();
+});
 
 // Rate Limiting - block IPs with too many requests
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 100; // max requests per window
-const RATE_LIMIT_BLOCK_DURATION = 10 * 60 * 1000; // block for 10 minutes
+const RATE_LIMIT_MAX = 30; // max requests per window (reduced from 100)
+const RATE_LIMIT_BLOCK_DURATION = 30 * 60 * 1000; // block for 30 minutes (increased from 10)
+
+// Socket connection rate limiting per IP
+const socketRateLimitMap = new Map();
+const SOCKET_RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const SOCKET_MAX_CONNECTIONS = 5; // max socket connections per IP per minute
+const SOCKET_BLOCK_DURATION = 60 * 60 * 1000; // block for 1 hour
+
+// Suspicious behavior tracking
+const suspiciousIPs = new Map();
+const SUSPICIOUS_THRESHOLD = 3; // strikes before permanent block
+const SUSPICIOUS_BLOCK_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 setInterval(() => {
   const now = Date.now();
@@ -48,6 +138,20 @@ setInterval(() => {
     }
     if (data.blocked && now > data.blockedUntil) {
       rateLimitMap.delete(ip);
+    }
+  }
+  // Clean up socket rate limit map
+  for (const [ip, data] of socketRateLimitMap) {
+    if (data.blocked && now > data.blockedUntil) {
+      socketRateLimitMap.delete(ip);
+    } else if (!data.blocked && now - data.firstConnection > SOCKET_RATE_LIMIT_WINDOW) {
+      socketRateLimitMap.delete(ip);
+    }
+  }
+  // Clean up suspicious IPs
+  for (const [ip, data] of suspiciousIPs) {
+    if (data.blocked && now > data.blockedUntil) {
+      suspiciousIPs.delete(ip);
     }
   }
 }, 60 * 1000);
@@ -83,13 +187,220 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/admin', express.static('admin'));
+// Protect admin panel with IP logging
+app.use('/admin', (req, res, next) => {
+  const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.ip;
+  console.log(`[ADMIN ACCESS] IP: ${ip}, Path: ${req.path}`);
+  next();
+}, express.static('admin'));
 
-// Socket.IO Configuration
+// API endpoint protection - require valid Origin for API calls
+app.use('/api', (req, res, next) => {
+  const origin = req.headers['origin'] || '';
+  const referer = req.headers['referer'] || '';
+  // Allow if origin matches OR referer contains allowed domain OR no origin (server-to-server)
+  const isAllowedOrigin = !origin || allowedOrigins.includes(origin);
+  const isAllowedReferer = !referer || allowedOrigins.some(o => referer.startsWith(o));
+  if (!isAllowedOrigin && !isAllowedReferer) {
+    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.ip;
+    console.log(`[API BLOCKED] Bad origin/referer. IP: ${ip}, Origin: ${origin}, Referer: ${referer}`);
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  next();
+});
+
+// Socket.IO Configuration with enhanced security
 const io = new Server(server, {
   cors: corsOptions,
   transports: ["websocket", "polling"],
+  pingTimeout: 30000,
+  pingInterval: 25000,
+  maxHttpBufferSize: 1e6, // 1MB max message size
 });
+
+// ===== ADVANCED BOT PROTECTION LAYER =====
+
+// Track connection attempts per IP for socket flood protection
+function checkSocketRateLimit(ip) {
+  const now = Date.now();
+  let data = socketRateLimitMap.get(ip);
+  
+  // Check if IP is blocked
+  if (data && data.blocked) {
+    if (now < data.blockedUntil) return false;
+    socketRateLimitMap.delete(ip);
+    data = null;
+  }
+  
+  if (!data) {
+    socketRateLimitMap.set(ip, { count: 1, firstConnection: now, blocked: false });
+    return true;
+  }
+  
+  if (now - data.firstConnection > SOCKET_RATE_LIMIT_WINDOW) {
+    socketRateLimitMap.set(ip, { count: 1, firstConnection: now, blocked: false });
+    return true;
+  }
+  
+  data.count++;
+  if (data.count > SOCKET_MAX_CONNECTIONS) {
+    data.blocked = true;
+    data.blockedUntil = now + SOCKET_BLOCK_DURATION;
+    markSuspicious(ip, 'socket_flood');
+    console.log(`[SOCKET FLOOD] IP blocked: ${ip} (${data.count} connections in ${SOCKET_RATE_LIMIT_WINDOW/1000}s)`);
+    return false;
+  }
+  return true;
+}
+
+// Track suspicious behavior
+function markSuspicious(ip, reason) {
+  const now = Date.now();
+  let data = suspiciousIPs.get(ip);
+  if (!data) {
+    data = { strikes: 0, reasons: [], firstStrike: now, blocked: false };
+    suspiciousIPs.set(ip, data);
+  }
+  data.strikes++;
+  data.reasons.push({ reason, time: new Date().toISOString() });
+  if (data.strikes >= SUSPICIOUS_THRESHOLD) {
+    data.blocked = true;
+    data.blockedUntil = now + SUSPICIOUS_BLOCK_DURATION;
+    console.log(`[SUSPICIOUS BLOCKED] IP: ${ip}, strikes: ${data.strikes}, reasons: ${data.reasons.map(r => r.reason).join(', ')}`);
+  }
+}
+
+// Check if IP is suspicious-blocked
+function isSuspiciousBlocked(ip) {
+  const data = suspiciousIPs.get(ip);
+  if (!data || !data.blocked) return false;
+  if (Date.now() > data.blockedUntil) {
+    suspiciousIPs.delete(ip);
+    return false;
+  }
+  return true;
+}
+
+// Advanced browser fingerprint validation
+function validateHandshake(socket) {
+  const headers = socket.handshake.headers;
+  const ua = headers['user-agent'] || '';
+  
+  // 1. Must have a valid User-Agent
+  if (!ua || ua.length < 20) return { valid: false, reason: 'missing_ua' };
+  
+  // 2. Must not be a known bot
+  if (isBot(ua)) return { valid: false, reason: 'bot_ua' };
+  
+  // 3. Must have browser-like headers
+  if (!isValidVisitor(ua)) return { valid: false, reason: 'invalid_browser' };
+  
+  // 4. Check for automation markers in headers
+  // Headless browsers often miss Accept-Language
+  if (!headers['accept-language']) {
+    return { valid: false, reason: 'no_accept_language' };
+  }
+  
+  // 5. Check Origin header matches allowed origins
+  const origin = headers['origin'] || '';
+  if (origin && !allowedOrigins.includes(origin)) {
+    return { valid: false, reason: 'bad_origin' };
+  }
+  
+  return { valid: true };
+}
+
+// Proof-of-Work challenge for socket connections
+// Real browsers solve it instantly, bots struggle or skip
+const pendingChallenges = new Map();
+const CHALLENGE_TIMEOUT = 15000; // 15 seconds to solve
+
+function generateChallenge() {
+  const prefix = Math.random().toString(36).substring(2, 8);
+  const difficulty = 3; // Number of leading zeros required
+  return { prefix, difficulty, timestamp: Date.now() };
+}
+
+function verifyChallenge(challenge, answer) {
+  if (!challenge || !answer) return false;
+  if (Date.now() - challenge.timestamp > CHALLENGE_TIMEOUT) return false;
+  // Simple hash verification - the answer combined with prefix should produce leading zeros
+  const combined = challenge.prefix + answer;
+  let hash = 0;
+  for (let i = 0; i < combined.length; i++) {
+    const char = combined.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  const hashStr = Math.abs(hash).toString(16);
+  return hashStr.startsWith('0'.repeat(challenge.difficulty));
+}
+
+// Socket.IO middleware - runs BEFORE connection event
+io.use((socket, next) => {
+  const ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+  const ua = socket.handshake.headers['user-agent'] || '';
+  
+  // 1. Check if IP is permanently blocked
+  if (isSuspiciousBlocked(ip)) {
+    console.log(`[BLOCKED] Suspicious IP rejected: ${ip}`);
+    return next(new Error('Access denied'));
+  }
+  
+  // 2. Check socket rate limit
+  if (!checkSocketRateLimit(ip)) {
+    console.log(`[RATE LIMITED] Socket connection rejected: ${ip}`);
+    return next(new Error('Too many connections'));
+  }
+  
+  // 3. Validate handshake (browser fingerprint)
+  const validation = validateHandshake(socket);
+  if (!validation.valid) {
+    console.log(`[HANDSHAKE FAILED] IP: ${ip}, reason: ${validation.reason}, UA: ${ua.substring(0, 60)}`);
+    markSuspicious(ip, validation.reason);
+    return next(new Error('Invalid connection'));
+  }
+  
+  // 4. Check for rapid reconnection (bot behavior)
+  const lastDisconnect = socket.handshake.auth?.lastDisconnect;
+  if (lastDisconnect && (Date.now() - lastDisconnect) < 1000) {
+    markSuspicious(ip, 'rapid_reconnect');
+  }
+  
+  console.log(`[ALLOWED] Connection from: ${ip}, UA: ${ua.substring(0, 40)}...`);
+  next();
+});
+
+// Event rate limiting per socket
+const socketEventCounters = new Map();
+const EVENT_RATE_LIMIT = 30; // max events per 10 seconds
+const EVENT_RATE_WINDOW = 10000; // 10 seconds
+
+function checkEventRateLimit(socketId) {
+  const now = Date.now();
+  let data = socketEventCounters.get(socketId);
+  if (!data) {
+    data = { count: 1, windowStart: now };
+    socketEventCounters.set(socketId, data);
+    return true;
+  }
+  if (now - data.windowStart > EVENT_RATE_WINDOW) {
+    data.count = 1;
+    data.windowStart = now;
+    return true;
+  }
+  data.count++;
+  return data.count <= EVENT_RATE_LIMIT;
+}
+
+// Clean up event counters when socket disconnects
+io.on('connection', (socket) => {
+  socket.on('disconnect', () => {
+    socketEventCounters.delete(socket.id);
+  });
+});
+
+// ===== END ADVANCED BOT PROTECTION LAYER =====
 
 // Data file path
 const DATA_DIR = process.env.NODE_ENV === 'production' ? '/data' : __dirname;
@@ -250,17 +561,6 @@ function getVisitorInfo(socket) {
   };
 }
 
-// Check if user agent is a bot or crawler - COMPREHENSIVE BLOCKING
-// Bot check DISABLED
-function isBot(ua) {
-  return false;
-}
-
-// Visitor validation DISABLED - allow everyone
-function isValidVisitor(ua) {
-  return true;
-}
-
 // Parse user agent
 function parseUserAgent(ua) {
   let os = "Unknown";
@@ -302,6 +602,24 @@ function saveVisitorPermanently(visitor) {
 // Socket.IO Connection Handler
 io.on("connection", (socket) => {
   console.log(`New connection: ${socket.id}`);
+
+  // Wrap all event handlers with rate limiting
+  const originalOn = socket.on.bind(socket);
+  socket.on = function(event, handler) {
+    if (['disconnect', 'error', 'connect'].includes(event)) {
+      return originalOn(event, handler);
+    }
+    return originalOn(event, (...args) => {
+      if (!checkEventRateLimit(socket.id)) {
+        const ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+        console.log(`[EVENT FLOOD] Socket ${socket.id} IP: ${ip}, event: ${event}`);
+        markSuspicious(ip, 'event_flood');
+        socket.disconnect();
+        return;
+      }
+      handler(...args);
+    });
+  };
 
   // Handle visitor registration
   socket.on("visitor:register", (data) => {

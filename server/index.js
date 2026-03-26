@@ -10,9 +10,23 @@ require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
 
-// CORS Configuration
+// CORS Configuration - Allow multiple origins
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  "https://becarensa-mk5dxhbq.manus.space",
+  "https://becarenasor-gilt.vercel.app",
+].filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "*",
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
   credentials: true,
 };
 

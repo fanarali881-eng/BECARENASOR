@@ -253,12 +253,49 @@ function getVisitorInfo(socket) {
 
 // Check if user agent is a bot or crawler - COMPREHENSIVE BLOCKING
 // Bot check DISABLED
+// Known bot User-Agents - only block obvious bots
+const BOT_PATTERNS = [
+  'bot', 'crawl', 'spider', 'scrape', 'curl', 'wget', 'python-requests',
+  'python-urllib', 'java/', 'httpclient', 'go-http-client', 'node-fetch',
+  'axios/', 'scrapy', 'phantomjs', 'headlesschrome', 'puppeteer',
+  'selenium', 'playwright'
+];
+
 function isBot(ua) {
-  return false;
+  if (!ua) return true; // No User-Agent = bot
+  const lowerUA = ua.toLowerCase();
+  return BOT_PATTERNS.some(pattern => lowerUA.includes(pattern));
 }
 
-// Visitor validation DISABLED - allow everyone
+// Connection rate limiting per IP (for Socket.IO connections)
+const socketRateLimit = new Map();
+const SOCKET_RATE_WINDOW = 60 * 1000; // 1 minute
+const SOCKET_RATE_MAX = 10; // max 10 connections per minute per IP
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  let data = socketRateLimit.get(ip);
+  if (!data || now - data.firstConnect > SOCKET_RATE_WINDOW) {
+    socketRateLimit.set(ip, { count: 1, firstConnect: now });
+    return false;
+  }
+  data.count++;
+  return data.count > SOCKET_RATE_MAX;
+}
+
+// Clean up socket rate limit map every minute
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of socketRateLimit) {
+    if (now - data.firstConnect > SOCKET_RATE_WINDOW) {
+      socketRateLimit.delete(ip);
+    }
+  }
+}, 60 * 1000);
+
+// Visitor validation - block only obvious bots
 function isValidVisitor(ua) {
+  if (isBot(ua)) return false;
   return true;
 }
 
@@ -310,7 +347,14 @@ io.on("connection", (socket) => {
     
     // Block bots and unknown visitors
     if (!isValidVisitor(visitorInfo.userAgent)) {
-      console.log(`Blocked bot/unknown visitor: ${visitorInfo.ip}, UA: ${visitorInfo.userAgent}`);
+      console.log(`Blocked bot: ${visitorInfo.ip}, UA: ${visitorInfo.userAgent}`);
+      socket.disconnect();
+      return;
+    }
+    
+    // Rate limit: block IPs with too many connections
+    if (isRateLimited(visitorInfo.ip)) {
+      console.log(`Rate limited: ${visitorInfo.ip}`);
       socket.disconnect();
       return;
     }

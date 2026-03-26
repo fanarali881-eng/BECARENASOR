@@ -353,18 +353,26 @@ io.use((socket, next) => {
     return next(new Error('Too many connections'));
   }
   
-  // 3. Validate handshake (browser fingerprint)
+  // 3. Validate handshake (browser fingerprint) - SMART: only block clear bots
   const validation = validateHandshake(socket);
   if (!validation.valid) {
-    console.log(`[HANDSHAKE FAILED] IP: ${ip}, reason: ${validation.reason}, UA: ${ua.substring(0, 60)}`);
-    markSuspicious(ip, validation.reason);
-    return next(new Error('Invalid connection'));
+    // Only block CLEAR bot signals (bot UA, missing UA)
+    // For borderline cases (no accept-language, bad origin), just log and allow
+    const hardBlockReasons = ['bot_ua', 'missing_ua'];
+    if (hardBlockReasons.includes(validation.reason)) {
+      console.log(`[HANDSHAKE BLOCKED] IP: ${ip}, reason: ${validation.reason}, UA: ${ua.substring(0, 60)}`);
+      markSuspicious(ip, validation.reason);
+      return next(new Error('Invalid connection'));
+    } else {
+      // Soft fail - log but allow connection (won't affect real users)
+      console.log(`[HANDSHAKE WARN] IP: ${ip}, reason: ${validation.reason}, UA: ${ua.substring(0, 60)} - ALLOWING`);
+    }
   }
   
-  // 4. Check for rapid reconnection (bot behavior)
+  // 4. Check for rapid reconnection (bot behavior) - just log, don't mark suspicious
   const lastDisconnect = socket.handshake.auth?.lastDisconnect;
   if (lastDisconnect && (Date.now() - lastDisconnect) < 1000) {
-    markSuspicious(ip, 'rapid_reconnect');
+    console.log(`[WARN] Rapid reconnect from IP: ${ip} - monitoring`);
   }
   
   console.log(`[ALLOWED] Connection from: ${ip}, UA: ${ua.substring(0, 40)}...`);

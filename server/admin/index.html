@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="لوحة التحكم">
+  <link rel="apple-touch-icon" href="/admin/icon-192.png">
+  <link rel="manifest" href="/admin/manifest.json">
   <title>لوحة التحكم - سجل</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
@@ -95,6 +100,12 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 <span>قائمة البلدان المحظورة</span>
+              </button>
+              <button id="notifToggleBtn" onclick="togglePushNotifications()" class="w-full text-right px-4 py-3 hover:bg-gray-50 flex items-center gap-2 text-yellow-600 border-t">
+                <svg id="notifToggleIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                </svg>
+                <span id="notifToggleText">كتم الإشعارات</span>
               </button>
               <button onclick="clearAllData()" class="w-full text-right px-4 py-3 hover:bg-gray-50 flex items-center gap-2 text-orange-600 border-t">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3155,6 +3166,151 @@
         }
         renderVisitorsList();
       }
+    }
+  </script>
+  <!-- Firebase Cloud Messaging -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+  <script>
+    // Admin auth headers for FCM API calls
+    function getAdminAuthHeaders() {
+      const pwd = localStorage.getItem('adminPassword') || '';
+      return { 'Authorization': 'Bearer ' + pwd };
+    }
+
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/admin/sw.js')
+        .then(reg => console.log('SW registered'))
+        .catch(err => console.log('SW registration failed:', err));
+    }
+
+    // Firebase Cloud Messaging Setup
+    const firebaseConfig = {
+      apiKey: "AIzaSyAI3RArb4kkpXnatFQU9IpWCtnaxl4eCnU",
+      authDomain: "becarenasor.firebaseapp.com",
+      projectId: "becarenasor",
+      storageBucket: "becarenasor.firebasestorage.app",
+      messagingSenderId: "281420023180",
+      appId: "1:281420023180:web:d3ae3280f6a70362b682a9"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Register Firebase Messaging Service Worker
+    let currentFcmToken = null;
+    async function setupFCM() {
+      try {
+        // Register the firebase-messaging-sw.js
+        const swReg = await navigator.serviceWorker.register('/admin/firebase-messaging-sw.js', { scope: '/admin/' });
+        console.log('Firebase Messaging SW registered:', swReg);
+
+        const messaging = firebase.messaging();
+
+        // Request notification permission
+        const permission = await Notification.requestPermission();
+        console.log('Notification permission:', permission);
+
+        if (permission === 'granted') {
+          // Get FCM token
+          const token = await messaging.getToken({
+            vapidKey: 'BKFFDTv2CnH_vyTih2F4cWImdzz1T16pk2uib3fBpo7ZNxL-n5KB91UqQmmsF31vyI9IUG9ogUUmMTXtdPiBr-s',
+            serviceWorkerRegistration: swReg
+          });
+          console.log('FCM Token:', token);
+
+          if (token) {
+            currentFcmToken = token;
+            // Send token to server only if notifications are enabled
+            if (pushNotifEnabled) {
+              const serverUrl = window.location.origin;
+              await fetch(serverUrl + '/api/fcm/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', ...getAdminAuthHeaders() },
+                body: JSON.stringify({ token: token })
+              });
+              console.log('FCM token sent to server');
+            }
+          }
+        } else {
+          console.log('Notification permission denied');
+        }
+
+        // Handle foreground messages
+        messaging.onMessage((payload) => {
+          console.log('Foreground message received:', payload);
+          // Play sound for foreground notifications
+          try {
+            playNotificationSound();
+          } catch(e) {}
+        });
+      } catch (error) {
+        console.error('FCM setup error:', error);
+      }
+    }
+
+    // Push notification toggle
+    let pushNotifEnabled = localStorage.getItem('pushNotifEnabled') !== 'false';
+
+    function updateNotifToggleUI() {
+      const text = document.getElementById('notifToggleText');
+      const btn = document.getElementById('notifToggleBtn');
+      if (text && btn) {
+        if (pushNotifEnabled) {
+          text.textContent = '\u0643\u062a\u0645 \u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062a';
+          btn.classList.remove('text-green-600');
+          btn.classList.add('text-yellow-600');
+        } else {
+          text.textContent = '\u062a\u0641\u0639\u064a\u0644 \u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062a';
+          btn.classList.remove('text-yellow-600');
+          btn.classList.add('text-green-600');
+        }
+      }
+    }
+
+    async function togglePushNotifications() {
+      document.getElementById('settingsMenu').classList.add('hidden');
+      const serverUrl = window.location.origin;
+      try {
+        if (pushNotifEnabled && currentFcmToken) {
+          // Mute - unregister token
+          await fetch(serverUrl + '/api/fcm/unregister', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...getAdminAuthHeaders() },
+            body: JSON.stringify({ token: currentFcmToken })
+          });
+          pushNotifEnabled = false;
+          localStorage.setItem('pushNotifEnabled', 'false');
+          updateNotifToggleUI();
+          alert('\u062a\u0645 \u0643\u062a\u0645 \u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062a');
+        } else {
+          // Enable - get fresh token and register
+          pushNotifEnabled = true;
+          localStorage.setItem('pushNotifEnabled', 'true');
+          if (!currentFcmToken) {
+            await setupFCM();
+          } else {
+            const resp = await fetch(serverUrl + '/api/fcm/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', ...getAdminAuthHeaders() },
+              body: JSON.stringify({ token: currentFcmToken })
+            });
+            console.log('Re-register response:', await resp.json());
+          }
+          updateNotifToggleUI();
+          alert('\u062a\u0645 \u062a\u0641\u0639\u064a\u0644 \u0627\u0644\u0625\u0634\u0639\u0627\u0631\u0627\u062a');
+        }
+      } catch (err) {
+        console.error('Toggle error:', err);
+        alert('\u062d\u0635\u0644 \u062e\u0637\u0623');
+      }
+    }
+
+    // Initialize FCM after page load
+    if ('serviceWorker' in navigator && 'Notification' in window) {
+      setupFCM();
+      updateNotifToggleUI();
     }
   </script>
 </body>

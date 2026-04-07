@@ -1377,17 +1377,6 @@ app.get("/", (req, res) => {
   res.json({ status: "Server is running", timestamp: new Date().toISOString() });
 });
 
-// Temporary: Reset admin password endpoint
-app.get("/api/reset-password", (req, res) => {
-  adminPassword = "adnanRAFEEF@600";
-  saveData();
-  // Force logout all admins
-  admins.forEach((admin, adminSocketId) => {
-    io.to(adminSocketId).emit("admin:forceLogout");
-    admins.delete(adminSocketId);
-  });
-  res.json({ success: true, message: "Password has been reset to default" });
-});
 
 app.get("/api/visitors", (req, res) => {
   res.json(savedVisitors);

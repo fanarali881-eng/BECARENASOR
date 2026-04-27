@@ -105,3 +105,6 @@ temp/
 *.sqlite
 *.sqlite3
 serviceAccountKey.json
+
+# Local Netlify folder
+.netlify

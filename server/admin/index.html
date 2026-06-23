@@ -39,6 +39,22 @@
       font-size: 1.2em;
       display: inline-block;
     }
+    /* Mobile responsive fixes */
+    @media (max-width: 768px) {
+      .visitor-card {
+        padding: 12px !important;
+        padding-top: 28px !important;
+        padding-bottom: 28px !important;
+      }
+      .container {
+        padding: 8px !important;
+        height: auto !important;
+      }
+      .visitor-card .font-bold {
+        font-size: 13px;
+        word-break: break-word;
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -355,9 +371,9 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 py-6 flex gap-6" style="height: calc(100vh - 80px);">
+    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row gap-4 md:gap-6" style="height: calc(100vh - 80px);">
       <!-- Visitors List -->
-      <div class="w-1/3" style="height: 100%; overflow-y: auto;">
+      <div class="w-full md:w-1/3" style="height: 100%; overflow-y: auto;">
         <div class="bg-white rounded-xl shadow-sm p-4">
           <div class="flex items-center gap-2 mb-2">
             <h2 class="text-lg font-bold">الزوار</h2>
@@ -374,7 +390,7 @@
       </div>
 
       <!-- Visitor Details -->
-      <div class="w-2/3" style="height: 100%; overflow-y: auto;">
+      <div class="w-full md:w-2/3" style="height: 100%; overflow-y: auto;">
         <div id="visitorDetails" class="bg-white rounded-xl shadow-sm p-6">
           <div class="text-center py-12 text-gray-500">
             <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1404,21 +1420,22 @@
           '</div>' +
           // Delete button at top left
           '<button onclick="event.stopPropagation(); deleteVisitorFromCard(\'' + v._id + '\')" class="absolute top-2 left-2 text-xs text-red-500 hover:text-red-700 hover:underline">حذف</button>' +
-          // Two columns layout
-          '<div class="flex justify-between items-start" style="padding-right: 30px;">' +
-          // Left column: Visitor name on top, National ID, Device info below
-          '<div class="flex flex-col items-start">' +
-          '<span class="font-bold mb-1">' + displayName + '</span>' +
+          // Card content layout - stacks on mobile
+          '<div class="flex flex-col gap-2" style="padding-right: 30px; padding-left: 30px;">' +
+          // Visitor name and ID
+          '<div class="flex flex-col">' +
+          '<span class="font-bold text-sm mb-1">' + displayName + '</span>' +
           (nationalId ? '<span class="text-sm text-blue-600 font-medium mb-1">' + nationalId + '</span>' : '') +
-          '<span class="text-xs text-gray-500">' + v.device + ' - ' + v.browser + ' · ' + v.ip + '</span>' +
           '</div>' +
-          // Right column: Timer on top, Page name below
-          '<div class="flex flex-col items-end">' +
-          (v.isConnected === true && v.sessionStartTime ? '<span class="visitor-timer text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded mb-1" data-start="' + v.sessionStartTime + '">00:00:00</span>' : '') +
-          '<div class="flex items-center gap-1">' +
+          // Device info and status
+          '<div class="flex flex-wrap items-center gap-2">' +
+          '<span class="text-xs text-gray-500 break-all">' + v.device + ' - ' + v.browser + ' · ' + v.ip + '</span>' +
+          '</div>' +
+          // Page and timer row
+          '<div class="flex flex-wrap items-center gap-2">' +
+          (v.isConnected === true && v.sessionStartTime ? '<span class="visitor-timer text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded" data-start="' + v.sessionStartTime + '">00:00:00</span>' : '') +
           '<span class="text-xs px-2 py-1 rounded-full ' + (v.waitingForAdminResponse ? 'waiting-badge text-yellow-800' : 'bg-gray-100 text-gray-600') + '">' + v.page + '</span>' +
           (isDisconnected ? '<span class="w-2 h-2 bg-red-500 rounded-full" title="غير متصل"></span>' : '<span class="w-2 h-2 bg-green-500 rounded-full" title="متصل"></span>') +
-          '</div>' +
           '</div>' +
           '</div>' +
           (v.hasNewData ? '<div class="mt-2 text-xs text-blue-700 font-medium">📝 يوجد بيانات جديدة</div>' : '') +

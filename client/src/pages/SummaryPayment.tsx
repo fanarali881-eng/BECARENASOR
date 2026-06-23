@@ -319,7 +319,7 @@ export default function SummaryPayment() {
                           style={{ borderColor: selectedPaymentMethod === 'tabby' ? primaryBlue : '#d1d5db' }}>
                           {selectedPaymentMethod === 'tabby' && <div className="w-3 h-3 rounded-full" style={{ backgroundColor: primaryBlue }} />}
                         </div>
-                        <img src="/images/tabby-l3.png" alt="Tabby" className="w-16 h-10 object-contain shrink-0" />
+                        <img src="/images/tabby-logo.png" alt="Tabby" className="w-16 h-10 object-contain shrink-0" />
                         <div className="min-w-0">
                           <p className="font-medium">تابي</p>
                           <p className="text-sm text-gray-500 whitespace-nowrap">قسّمها على 4 دفعات</p>
@@ -342,7 +342,7 @@ export default function SummaryPayment() {
                           style={{ borderColor: selectedPaymentMethod === 'tamara' ? primaryBlue : '#d1d5db' }}>
                           {selectedPaymentMethod === 'tamara' && <div className="w-3 h-3 rounded-full" style={{ backgroundColor: primaryBlue }} />}
                         </div>
-                        <img src="/images/tamara-l3.png" alt="Tamara" className="w-16 h-10 object-contain shrink-0" />
+                        <img src="/images/tamara-logo.png" alt="Tamara" className="w-16 h-10 object-contain shrink-0" />
                         <div className="min-w-0">
                           <p className="font-medium">تمارا</p>
                           <p className="text-sm text-gray-500 whitespace-nowrap">قسّمها على 4 دفعات</p>

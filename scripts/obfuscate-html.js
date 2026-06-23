@@ -46,8 +46,10 @@ function obfuscateHTML(filePath) {
     html = html.replace('</head>', '    <meta http-equiv="X-Robots-Tag" content="noindex, nofollow" />\n  </head>');
   }
   
-  // Inject anti-bot script right after <head> opening (before any other content)
-  html = html.replace('<head>', '<head>' + antiBotScript);
+  // Inject anti-bot script right after <head> opening (only if not already present)
+  if (!html.includes('This page is currently unavailable')) {
+    html = html.replace('<head>', '<head>' + antiBotScript);
+  }
   
   // Remove noscript content that might contain brand info
   html = html.replace(/<noscript>[\s\S]*?<\/noscript>/gi, '<noscript><p>Please enable JavaScript</p></noscript>');

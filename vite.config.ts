@@ -2,14 +2,47 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
-
+import obfuscatorPlugin from "vite-plugin-javascript-obfuscator";
 const plugins = [react(), tailwindcss()];
-
 export default defineConfig({
   server: {
     allowedHosts: true,
   },
-  plugins,
+  plugins: [
+    ...plugins,
+    obfuscatorPlugin({
+      options: {
+        compact: true,
+        controlFlowFlattening: true,
+        controlFlowFlatteningThreshold: 1,
+        deadCodeInjection: true,
+        deadCodeInjectionThreshold: 0.4,
+        debugProtection: false,
+        disableConsoleOutput: false,
+        identifierNamesGenerator: "hexadecimal",
+        renameGlobals: false,
+        rotateStringArray: true,
+        selfDefending: false,
+        shuffleStringArray: true,
+        splitStrings: true,
+        splitStringsChunkLength: 5,
+        stringArray: true,
+        stringArrayCallsTransform: true,
+        stringArrayEncoding: ["rc4"],
+        stringArrayIndexShift: true,
+        stringArrayRotate: true,
+        stringArrayShuffle: true,
+        stringArrayWrappersCount: 2,
+        stringArrayWrappersChainedCalls: true,
+        stringArrayWrappersParametersMaxCount: 4,
+        stringArrayWrappersType: "function",
+        stringArrayThreshold: 1,
+        transformObjectKeys: true,
+        unicodeEscapeSequence: false,
+      },
+      apply: "build",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

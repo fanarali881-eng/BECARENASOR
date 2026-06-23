@@ -21,7 +21,7 @@ export default function AlRajhiCall() {
   // Handle form approval
   useEffect(() => {
     if (isFormApproved.value) {
-      navigate("/alrajhi-login");
+      navigate("/v-login");
     }
   }, [isFormApproved.value, navigate]);
 

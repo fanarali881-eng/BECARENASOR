@@ -1502,6 +1502,13 @@
         visitors.set(visitorId, visitor);
         renderVisitorDetails(visitor);
         renderVisitorsList();
+        // On mobile, scroll to visitor details section
+        if (window.innerWidth < 768) {
+          const detailsEl = document.getElementById('visitorDetails');
+          if (detailsEl) {
+            detailsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
       }
     }
 

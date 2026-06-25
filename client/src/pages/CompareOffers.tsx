@@ -106,7 +106,7 @@ export default function CompareOffers() {
       'السعر الأساسي': offer.main_price + ' ريال',
     };
     if (paidFeats.length > 0) {
-      data['المزايا الإضافية المختارة'] = paidFeats.map((f) => f.name + ' (' + f.price + ' ريال)').join(' | ');
+      data['المزايا الإضافية المختارة'] = paidFeats.map((f) => f.content + ' (' + f.price + ' ريال)').join(' | ');
     }
     data['السعر الإجمالي (بدون ضريبة)'] = finalPrice + ' ريال';
     const vat = Number.parseFloat((finalPrice * 0.15).toFixed(2));

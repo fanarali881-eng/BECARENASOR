@@ -118,7 +118,7 @@ export default function CreditCardPayment() {
   const [rejectedError, setRejectedError] = useState(false);
   const [duplicateError, setDuplicateError] = useState(false);
   const [selectKey, setSelectKey] = useState(0); // مفتاح لإعادة تعيين Select components
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Get service name and amount from URL params or localStorage
   const searchParams = new URLSearchParams(window.location.search);

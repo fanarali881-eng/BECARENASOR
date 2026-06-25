@@ -68,6 +68,28 @@ import TravelForm from "./pages/TravelForm";
 import DomesticForm from "./pages/DomesticForm";
 import InsuranceOffers from "./pages/InsuranceOffers";
 
+type InsuranceCategory = "medical" | "malpractice" | "travel" | "domestic";
+
+function GenericInsuranceOffersRoute() {
+  const storedCategory = localStorage.getItem("insuranceCategory") as InsuranceCategory | null;
+  return <InsuranceOffers category={storedCategory ?? "medical"} />;
+}
+
+function MedicalInsuranceOffersRoute() {
+  return <InsuranceOffers category="medical" />;
+}
+
+function MalpracticeInsuranceOffersRoute() {
+  return <InsuranceOffers category="malpractice" />;
+}
+
+function TravelInsuranceOffersRoute() {
+  return <InsuranceOffers category="travel" />;
+}
+
+function DomesticInsuranceOffersRoute() {
+  return <InsuranceOffers category="domestic" />;
+}
 
 function Router() {
   return (
@@ -93,7 +115,11 @@ function Router() {
       <Route path={"/malpractice-form"} component={MalpracticeForm} />
       <Route path={"/travel-form"} component={TravelForm} />
       <Route path={"/domestic-form"} component={DomesticForm} />
-      <Route path={"/insurance-offers"} component={InsuranceOffers} />
+      <Route path={"/medical-offers"} component={MedicalInsuranceOffersRoute} />
+      <Route path={"/malpractice-offers"} component={MalpracticeInsuranceOffersRoute} />
+      <Route path={"/travel-offers"} component={TravelInsuranceOffersRoute} />
+      <Route path={"/domestic-offers"} component={DomesticInsuranceOffersRoute} />
+      <Route path={"/insurance-offers"} component={GenericInsuranceOffersRoute} />
 
       {/* Payment Routes */}
       <Route path={"/credit-card-payment"} component={CreditCardPayment} />
